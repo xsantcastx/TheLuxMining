@@ -5,6 +5,7 @@ import { Analytics, logEvent, setUserId, setUserProperties } from '@angular/fire
 import { filter } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ConsentService } from './consent.service';
+import { AnalyticsLoggerService } from './analytics-logger.service';
 import { Cart, CartItem } from '../models/cart';
 import { Product } from '../models/product';
 
@@ -26,6 +27,7 @@ export class AnalyticsService {
   private platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private consentService = inject(ConsentService);
+  private analyticsLogger = inject(AnalyticsLoggerService);
   private analytics?: Analytics;
   private analyticsConsentGranted = false;
   private measurementId = environment.firebase?.measurementId;
@@ -84,6 +86,11 @@ export class AnalyticsService {
       page_location: pageLocation,
       page_title: pageTitle
     });
+
+    // Also log to Firestore with geographic data for analytics
+    if (this.analyticsConsentGranted) {
+      void this.analyticsLogger.logPageView(path);
+    }
   }
 
   trackContactSubmit(method: 'form' | 'whatsapp' | 'email', additionalData?: Record<string, any>): void {
@@ -92,6 +99,16 @@ export class AnalyticsService {
       page_location: this.isBrowser ? window.location.href : undefined,
       ...additionalData
     });
+
+    // If it's a form submission with email and message, log as quote
+    if (method === 'form' && additionalData?.['email'] && additionalData?.['message']) {
+      void this.analyticsLogger.logQuoteRequest({
+        email: additionalData['email'],
+        message: additionalData['message'],
+        productId: additionalData['productId'],
+        productName: additionalData['productName']
+      });
+    }
   }
 
   trackProductClick(productName: string, category?: string): void {

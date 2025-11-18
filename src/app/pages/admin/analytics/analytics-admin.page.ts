@@ -2,6 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
+import { LineChartComponent, ChartSeries } from '../../../shared/components/line-chart/line-chart.component';
+import { GeoHeatmapComponent, GeoDataPoint } from '../../../shared/components/geo-heatmap/geo-heatmap.component';
 import {
   AdminDashboardService,
   AdminActivityItem,
@@ -33,7 +35,7 @@ interface FutureInitiative {
 @Component({
   selector: 'app-analytics-admin',
   standalone: true,
-  imports: [CommonModule, TranslateModule, AdminSidebarComponent],
+  imports: [CommonModule, TranslateModule, AdminSidebarComponent, LineChartComponent, GeoHeatmapComponent],
   templateUrl: './analytics-admin.page.html',
   styleUrls: ['./analytics-admin.page.scss']
 })
@@ -47,6 +49,13 @@ export class AnalyticsAdminComponent extends LoadingComponentBase implements OnI
   currencyCode = 'USD';
   recentActivity: AdminActivityItem[] = [];
   periodOptions: AnalyticsPeriod[] = ['today', 'week', 'month', 'year'];
+
+  // Chart data
+  revenueChartSeries: ChartSeries[] = [];
+  topProducts: any[] = [];
+  geoData: GeoDataPoint[] = [];
+  showCharts = true; // Beta feature flag
+  showGeoMap = true; // Design phase feature flag
 
   futureInitiatives: FutureInitiative[] = [
     {
@@ -65,7 +74,7 @@ export class AnalyticsAdminComponent extends LoadingComponentBase implements OnI
       titleKey: 'admin.analytics.future_items.geo.title',
       descriptionKey: 'admin.analytics.future_items.geo.description',
       statusKey: 'admin.analytics.future_items.geo.status',
-      tone: 'design'
+      tone: 'beta' // Changed from 'design' to 'beta' since now implemented
     },
     {
       titleKey: 'admin.analytics.future_items.funnels.title',
@@ -86,7 +95,66 @@ export class AnalyticsAdminComponent extends LoadingComponentBase implements OnI
 
       this.metrics = snapshot.metrics.map(metric => this.mapMetricToCard(metric, snapshot.currencyCode));
       this.recentActivity = snapshot.recentActivity;
+
+      // Load chart data if beta feature is enabled
+      if (this.showCharts) {
+        await this.loadChartData();
+      }
     });
+  }
+
+  async loadChartData() {
+    try {
+      const [revenueTrend, topProducts, geoData] = await Promise.all([
+        this.dashboardService.getRevenueTrend(this.selectedPeriod),
+        this.dashboardService.getTopProducts(this.selectedPeriod, 10),
+        this.showGeoMap ? this.dashboardService.getGeographicData(this.selectedPeriod) : Promise.resolve([])
+      ]);
+
+      // Prepare chart series
+      this.revenueChartSeries = [
+        {
+          name: 'Revenue',
+          data: revenueTrend.map(d => ({
+            label: this.formatChartLabel(d.date),
+            value: d.revenue,
+            date: d.date
+          })),
+          color: '#F7931A' // bitcoin-orange
+        },
+        {
+          name: 'Profit',
+          data: revenueTrend.map(d => ({
+            label: this.formatChartLabel(d.date),
+            value: d.profit,
+            date: d.date
+          })),
+          color: '#50C878' // green
+        }
+      ];
+
+      this.topProducts = topProducts;
+      this.geoData = geoData;
+    } catch (error) {
+      console.error('Error loading chart data:', error);
+    }
+  }
+
+  private formatChartLabel(date: Date): string {
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const day = date.getDate();
+    
+    switch (this.selectedPeriod) {
+      case 'today':
+        return date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true });
+      case 'week':
+      case 'month':
+        return `${month} ${day}`;
+      case 'year':
+        return month;
+      default:
+        return `${month} ${day}`;
+    }
   }
 
   async setPeriod(period: AnalyticsPeriod) {
@@ -215,5 +283,16 @@ export class AnalyticsAdminComponent extends LoadingComponentBase implements OnI
       user: 'bg-bitcoin-orange/20 text-bitcoin-orange border border-bitcoin-orange/30'
     };
     return colors[type];
+  }
+
+  getRegionStats(region: string): { quotes: number; conversions: number; rate: number } | null {
+    const regionData = this.geoData.filter(d => d.region === region);
+    if (regionData.length === 0) return null;
+
+    const quotes = regionData.reduce((sum, d) => sum + d.quotes, 0);
+    const conversions = regionData.reduce((sum, d) => sum + d.conversions, 0);
+    const rate = quotes > 0 ? (conversions / quotes) * 100 : 0;
+
+    return { quotes, conversions, rate };
   }
 }

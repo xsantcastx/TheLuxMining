@@ -109,13 +109,13 @@
               </div>
             } @else {
               <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-bitcoin-gray/30 rounded-lg cursor-pointer hover:border-bitcoin-orange/50 transition-colors">
-                <svg class="w-8 h-8 text-bitcoin-gray/50 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-8 h-8 text-bitcoin-gray mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                <span class="text-sm text-bitcoin-gray/70">Click to upload cover image</span>
+                <span class="text-sm text-white/80">Click to upload cover media</span>
                 <input 
                   type="file" 
-                  accept="image/*" 
+                  accept="image/*,video/*" 
                   (change)="onCoverImageSelected($event)" 
                   class="hidden">
               </label>
@@ -124,7 +124,7 @@
 
           <!-- Gallery Images -->
           <div>
-            <label class="block text-sm font-medium text-bitcoin-gray mb-2">Gallery Images</label>
+            <label class="block text-sm font-medium text-bitcoin-gray mb-2">Gallery Media</label>
             <div class="grid grid-cols-4 gap-3 mb-3">
               @for (preview of galleryPreviews; track $index) {
                 <div class="relative">
@@ -141,13 +141,13 @@
               }
             </div>
             <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-bitcoin-gray/30 rounded-lg cursor-pointer hover:border-bitcoin-orange/50 transition-colors">
-              <svg class="w-6 h-6 text-bitcoin-gray/50 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 text-bitcoin-gray mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
-              <span class="text-xs text-bitcoin-gray/70">Add more images</span>
+              <span class="text-xs text-white/80">Add more media</span>
               <input 
                 type="file" 
-                accept="image/*" 
+                accept="image/*,video/*" 
                 multiple
                 (change)="onGalleryImagesSelected($event)" 
                 class="hidden">
@@ -212,7 +212,7 @@
         <div class="bg-bitcoin-dark/40 border border-bitcoin-gray/20 rounded-xl p-6">
           <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold text-white">Product Benefits</h3>
-            <span class="text-xs text-bitcoin-gray">{{ currentBenefits.length }}/4</span>
+            <span class="text-xs text-white/70">{{ currentBenefits.length }}/4</span>
           </div>
           
           <!-- Current Benefits -->
@@ -230,7 +230,7 @@
                   <!-- Content -->
                   <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-white">{{ benefit.title }}</p>
-                    <p class="text-xs text-bitcoin-gray/70 mt-0.5">{{ benefit.description }}</p>
+                    <p class="text-xs text-white/60 mt-0.5">{{ benefit.description }}</p>
                   </div>
                   
                   <!-- Remove -->
@@ -246,7 +246,7 @@
               }
             </div>
           } @else {
-            <p class="text-sm text-bitcoin-gray/60 italic mb-4">No benefits added yet. Select from templates below.</p>
+            <p class="text-sm text-white/60 italic mb-4">No benefits added yet. Select from templates below.</p>
           }
           
           <!-- Add Benefits -->
@@ -267,7 +267,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                       <p class="text-sm font-medium text-white">{{ template.title }}</p>
-                      <p class="text-xs text-bitcoin-gray/60 mt-0.5">{{ template.description }}</p>
+                      <p class="text-xs text-white/60 mt-0.5">{{ template.description }}</p>
                     </div>
                     <svg class="w-5 h-5 text-bitcoin-orange flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -275,7 +275,7 @@
                   </button>
                 }
                 @if (availableBenefitTemplates.length === 0) {
-                  <p class="text-sm text-bitcoin-gray/60 italic p-3">Select a category first to see available benefit templates.</p>
+                  <p class="text-sm text-white/60 italic p-3">Select a category first to see available benefit templates.</p>
                 }
               </div>
             </div>
@@ -331,7 +331,7 @@
               }
             </div>
           } @else {
-            <p class="text-sm text-bitcoin-gray/70 italic mb-4 p-4 bg-bitcoin-dark/20 rounded-lg border border-bitcoin-gray/10">
+            <p class="text-sm text-white/70 italic mb-4 p-4 bg-bitcoin-dark/20 rounded-lg border border-bitcoin-gray/10">
               No specifications added yet. Add specs below or use quick templates.
             </p>
           }
@@ -448,27 +448,27 @@
             <div>
               <label class="block text-sm font-medium text-bitcoin-gray mb-2">
                 Meta Title
-                <span class="text-xs font-normal text-bitcoin-gray/60 ml-2">(Optional)</span>
+                <span class="text-xs font-normal text-white/60 ml-2">(Optional)</span>
               </label>
               <input 
                 type="text" 
                 formControlName="metaTitle" 
                 class="w-full px-4 py-2.5 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded-lg focus:ring-2 focus:ring-bitcoin-orange focus:border-bitcoin-orange text-white placeholder-bitcoin-gray/50"
                 placeholder="Defaults to product title">
-              <p class="mt-1.5 text-xs text-bitcoin-gray/60">How your product appears in search results</p>
+              <p class="mt-1.5 text-xs text-white/70">How your product appears in search results</p>
             </div>
             
             <div>
               <label class="block text-sm font-medium text-bitcoin-gray mb-2">
                 Meta Description
-                <span class="text-xs font-normal text-bitcoin-gray/60 ml-2">(Optional)</span>
+                <span class="text-xs font-normal text-white/60 ml-2">(Optional)</span>
               </label>
               <textarea 
                 formControlName="metaDescription" 
-                rows="3"
+                rows="2"
                 class="w-full px-4 py-2.5 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded-lg focus:ring-2 focus:ring-bitcoin-orange focus:border-bitcoin-orange text-white placeholder-bitcoin-gray/50 resize-none"
-                placeholder="Defaults to product description"></textarea>
-              <p class="mt-1.5 text-xs text-bitcoin-gray/60">A brief summary to appear in search engines (150-160 characters recommended)</p>
+                placeholder="Defaults to auto-generated from description"></textarea>
+              <p class="mt-1.5 text-xs text-white/70">A brief summary to appear in search engines (150-160 characters recommended)</p>
             </div>
 
             <!-- Auto-generated URL slug info -->
@@ -479,7 +479,7 @@
                 </svg>
                 <div class="flex-1">
                   <p class="text-sm font-medium text-bitcoin-orange mb-1">URL automatically generated</p>
-                  <p class="text-xs text-bitcoin-gray/80">The product URL is created from your title: <span class="font-mono text-white">{{ productForm.get('slug')?.value || 'auto-generated-from-title' }}</span></p>
+                  <p class="text-xs text-white/80">The product URL is created from your title: <span class="font-mono text-white">{{ productForm.get('slug')?.value || 'auto-generated-from-title' }}</span></p>
                 </div>
               </div>
             </div>

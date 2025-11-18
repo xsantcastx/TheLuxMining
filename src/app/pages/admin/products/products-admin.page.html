@@ -98,10 +98,10 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-bitcoin-orange uppercase tracking-wider">
                   <div class="flex flex-col gap-1">
                     <span>{{ 'admin.product_category' | translate }}</span>
-                    <select [(ngModel)]="selectedCategoryFilter" class="text-xs px-2 py-1 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded text-bitcoin-gray focus:ring-1 focus:ring-bitcoin-orange focus:border-bitcoin-orange">
-                      <option value="">All Categories</option>
+                    <select [(ngModel)]="selectedCategoryFilter" class="text-xs px-2 py-1 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded text-white focus:ring-1 focus:ring-bitcoin-orange focus:border-bitcoin-orange">
+                      <option value="" class="bg-bitcoin-dark text-bitcoin-gray">All Categories</option>
                       @for (cat of categories; track cat.id) {
-                        <option [value]="cat.id">{{ cat.name }}</option>
+                        <option [value]="cat.id" class="bg-bitcoin-dark text-white">{{ cat.name }}</option>
                       }
                     </select>
                   </div>
@@ -109,10 +109,10 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-bitcoin-orange uppercase tracking-wider">
                   <div class="flex flex-col gap-1">
                     <span>{{ 'admin.product_model' | translate }}</span>
-                    <select [(ngModel)]="selectedModelFilter" class="text-xs px-2 py-1 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded text-bitcoin-gray focus:ring-1 focus:ring-bitcoin-orange focus:border-bitcoin-orange">
-                      <option value="">All Models</option>
+                    <select [(ngModel)]="selectedModelFilter" class="text-xs px-2 py-1 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded text-white focus:ring-1 focus:ring-bitcoin-orange focus:border-bitcoin-orange">
+                      <option value="" class="bg-bitcoin-dark text-bitcoin-gray">All Models</option>
                       @for (model of models; track model.id) {
-                        <option [value]="model.id">{{ model.name }}</option>
+                        <option [value]="model.id" class="bg-bitcoin-dark text-white">{{ model.name }}</option>
                       }
                     </select>
                   </div>
@@ -120,11 +120,11 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-bitcoin-orange uppercase tracking-wider">
                   <div class="flex flex-col gap-1">
                     <span>Status</span>
-                    <select [(ngModel)]="selectedStatusFilter" class="text-xs px-2 py-1 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded text-bitcoin-gray focus:ring-1 focus:ring-bitcoin-orange focus:border-bitcoin-orange">
-                      <option value="">All Status</option>
-                      <option value="published">Published</option>
-                      <option value="draft">Draft</option>
-                      <option value="archived">Archived</option>
+                    <select [(ngModel)]="selectedStatusFilter" class="text-xs px-2 py-1 bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded text-white focus:ring-1 focus:ring-bitcoin-orange focus:border-bitcoin-orange">
+                      <option value="" class="bg-bitcoin-dark text-bitcoin-gray">All Status</option>
+                      <option value="published" class="bg-bitcoin-dark text-white">Published</option>
+                      <option value="draft" class="bg-bitcoin-dark text-white">Draft</option>
+                      <option value="archived" class="bg-bitcoin-dark text-white">Archived</option>
                     </select>
                   </div>
                 </th>
@@ -941,7 +941,7 @@
                   <div class="flex-1 space-y-2">
                     <h3 class="text-lg font-semibold bitcoin-gradient-text">{{ 'admin.cover_image' | translate }}</h3>
                     <p class="text-sm text-bitcoin-gray">{{ 'admin.cover_required_notice' | translate }}</p>
-                    <input type="file" accept="image/*" (change)="onCoverSelected($event)" class="mt-2 text-bitcoin-gray text-base file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-bitcoin-orange/30 file:text-bitcoin-orange hover:file:bg-bitcoin-orange/40 file:cursor-pointer">
+                    <input type="file" accept="image/*,video/*" (change)="onCoverSelected($event)" class="mt-2 text-bitcoin-gray text-base file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-bitcoin-orange/30 file:text-bitcoin-orange hover:file:bg-bitcoin-orange/40 file:cursor-pointer">
                     @if (!hasCoverImage) {
                       <p class="text-sm text-red-400 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

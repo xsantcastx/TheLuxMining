@@ -53,6 +53,166 @@
       }
     </div>
 
+    <!-- Interactive Revenue Charts (Beta) -->
+    @if (showCharts && revenueChartSeries.length > 0) {
+      <div class="mb-10 space-y-6">
+        <!-- Revenue & Profit Trends -->
+        <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-2xl p-6 shadow-bitcoin">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="flex items-center gap-3">
+                <h2 class="text-2xl font-serif font-bold bitcoin-gradient-text">Interactive Revenue Charts</h2>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full border bg-green-500/10 border-green-500/30 text-green-300">
+                  Internal Beta
+                </span>
+              </div>
+              <p class="text-sm text-white/60 mt-1">Real-time revenue, profit, and ROI dashboards with exportable insights</p>
+            </div>
+            <button
+              type="button"
+              class="px-4 py-2 bg-bitcoin-orange/20 hover:bg-bitcoin-orange/30 text-bitcoin-orange border border-bitcoin-orange/30 rounded-xl transition-colors text-sm font-medium">
+              Export CSV
+            </button>
+          </div>
+
+          <!-- Chart -->
+          <div class="h-96 bg-bitcoin-dark/60 rounded-xl p-6 border border-bitcoin-gray/10">
+            <app-line-chart
+              [series]="revenueChartSeries"
+              [height]="350"
+              [valuePrefix]="currencyCode + ' '"
+              [showLegend]="true">
+            </app-line-chart>
+          </div>
+        </div>
+
+        <!-- Top Performing Products -->
+        <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-2xl p-6 shadow-bitcoin">
+          <div class="flex items-center gap-3 mb-6">
+            <h3 class="text-xl font-serif font-bold bitcoin-gradient-text">Top Performing Models</h3>
+            <span class="px-2 py-1 text-xs font-semibold rounded-full border bg-bitcoin-orange/10 border-bitcoin-orange/30 text-bitcoin-orange">
+              In Development
+            </span>
+          </div>
+          <p class="text-sm text-white/60 mb-6">Segmented performance reports to surface high-converting miners and seasonal demand shifts</p>
+
+          @if (topProducts.length > 0) {
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="border-b border-bitcoin-gray/20">
+                  <tr>
+                    <th class="text-left text-xs font-medium text-bitcoin-orange uppercase tracking-wider pb-3">Product</th>
+                    <th class="text-right text-xs font-medium text-bitcoin-orange uppercase tracking-wider pb-3">Revenue</th>
+                    <th class="text-right text-xs font-medium text-bitcoin-orange uppercase tracking-wider pb-3">Orders</th>
+                    <th class="text-right text-xs font-medium text-bitcoin-orange uppercase tracking-wider pb-3">Conversion Rate</th>
+                    <th class="text-right text-xs font-medium text-bitcoin-orange uppercase tracking-wider pb-3">Views</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-bitcoin-gray/10">
+                  @for (product of topProducts; track product.productId) {
+                    <tr class="hover:bg-bitcoin-dark/60 transition-colors">
+                      <td class="py-4 text-white font-medium">{{ product.productName }}</td>
+                      <td class="py-4 text-right text-bitcoin-gold font-semibold">{{ product.revenue | number:'1.0-0' }} {{ currencyCode }}</td>
+                      <td class="py-4 text-right text-white/80">{{ product.orders }}</td>
+                      <td class="py-4 text-right">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium"
+                          [class.bg-green-500/20]="product.conversionRate >= 15"
+                          [class.text-green-400]="product.conversionRate >= 15"
+                          [class.bg-bitcoin-gold/20]="product.conversionRate >= 10 && product.conversionRate < 15"
+                          [class.text-bitcoin-gold]="product.conversionRate >= 10 && product.conversionRate < 15"
+                          [class.bg-red-500/20]="product.conversionRate < 10"
+                          [class.text-red-400]="product.conversionRate < 10">
+                          {{ product.conversionRate | number:'1.1-1' }}%
+                        </span>
+                      </td>
+                      <td class="py-4 text-right text-white/60">{{ product.views | number }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="text-center text-white/60 py-8">No product data available for this period</p>
+          }
+        </div>
+
+        <!-- Geographic Breakdowns (In Design) -->
+        @if (showGeoMap) {
+          <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-2xl p-6 shadow-bitcoin">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <div class="flex items-center gap-3">
+                  <h3 class="text-xl font-serif font-bold bitcoin-gradient-text">Geographic Breakdowns</h3>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full border bg-green-500/10 border-green-500/30 text-green-300">
+                    Internal Beta
+                  </span>
+                </div>
+                <p class="text-sm text-white/60 mt-1">Heatmaps of quote requests and conversions to pinpoint expansion opportunities across LATAM, EU, and APAC</p>
+              </div>
+              <button
+                type="button"
+                class="px-4 py-2 bg-bitcoin-orange/20 hover:bg-bitcoin-orange/30 text-bitcoin-orange border border-bitcoin-orange/30 rounded-xl transition-colors text-sm font-medium">
+                Export Report
+              </button>
+            </div>
+
+            @if (geoData.length > 0) {
+              <!-- Heatmap -->
+              <div class="h-[500px] bg-bitcoin-dark/60 rounded-xl p-4 border border-bitcoin-gray/10">
+                <app-geo-heatmap [geoData]="geoData"></app-geo-heatmap>
+              </div>
+
+              <!-- Regional Summary Stats -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                @for (region of ['LATAM', 'EU', 'APAC', 'NA']; track region) {
+                  @if (getRegionStats(region); as stats) {
+                    <div class="bg-bitcoin-dark/80 border border-bitcoin-gray/20 rounded-xl p-4">
+                      <div class="text-xs uppercase tracking-wider text-white/60 mb-2">{{ region }}</div>
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-baseline">
+                          <span class="text-xs text-white/50">Orders</span>
+                          <span class="text-lg font-bold text-white">{{ stats.quotes }}</span>
+                        </div>
+                        <div class="flex justify-between items-baseline">
+                          <span class="text-xs text-white/50">Completed</span>
+                          <span class="text-lg font-bold text-bitcoin-gold">{{ stats.conversions }}</span>
+                        </div>
+                        <div class="flex justify-between items-baseline">
+                          <span class="text-xs text-white/50">Rate</span>
+                          <span class="text-sm font-semibold"
+                            [class.text-green-400]="stats.rate >= 15"
+                            [class.text-bitcoin-gold]="stats.rate >= 10 && stats.rate < 15"
+                            [class.text-red-400]="stats.rate < 10">
+                            {{ stats.rate | number:'1.1-1' }}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+            } @else {
+              <!-- Empty state -->
+              <div class="h-[400px] bg-bitcoin-dark/60 rounded-xl p-8 border border-bitcoin-gray/10 flex items-center justify-center">
+                <div class="text-center max-w-md">
+                  <svg class="w-16 h-16 mx-auto mb-4 text-bitcoin-orange/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <h4 class="text-lg font-semibold text-white mb-2">No Geographic Data Yet</h4>
+                  <p class="text-sm text-white/60 mb-4">
+                    Once you have orders with shipping addresses, the heatmap will display regional performance data.
+                  </p>
+                  <p class="text-xs text-white/40">
+                    Make sure orders include country information in the shipping address.
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
     @if (recentActivity.length > 0) {
       <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-xl p-6 mb-8 shadow-bitcoin">
         <div class="flex items-center justify-between mb-4">

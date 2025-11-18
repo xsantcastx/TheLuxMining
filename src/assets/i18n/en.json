@@ -935,7 +935,7 @@
         "geo": {
           "title": "Geographic breakdowns",
           "description": "Heatmaps of quote requests and conversions to pinpoint expansion opportunities across LATAM, EU, and APAC.",
-          "status": "admin.analytics.future_status.in_design"
+          "status": "admin.analytics.future_status.internal_beta"
         },
         "funnels": {
           "title": "Conversion funnels",

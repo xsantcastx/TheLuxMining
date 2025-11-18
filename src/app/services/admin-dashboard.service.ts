@@ -783,4 +783,416 @@ export class AdminDashboardService {
     const end = Timestamp.fromDate(range.end);
     return [where(field, '>=', start), where(field, '<', end)];
   }
+
+  /**
+   * Get revenue trend data for charts
+   */
+  async getRevenueTrend(period: AnalyticsPeriod): Promise<{ date: Date; revenue: number; orders: number; profit: number }[]> {
+    try {
+      const range = this.getPeriodBounds(period).current;
+      const ordersRef = collection(this.firestore, 'orders');
+      
+      const q = query(
+        ordersRef,
+        where('status', '==', 'completed'),
+        where('createdAt', '>=', Timestamp.fromDate(range.start)),
+        where('createdAt', '<', Timestamp.fromDate(range.end)),
+        orderBy('createdAt', 'asc')
+      );
+
+      const snapshot = await getDocs(q);
+      
+      // Group by day/week/month based on period
+      const grouped = new Map<string, { revenue: number; orders: number; profit: number }>();
+      
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const date = data['createdAt']?.toDate();
+        if (!date) return;
+
+        const key = this.getDateKey(date, period);
+        const current = grouped.get(key) || { revenue: 0, orders: 0, profit: 0 };
+        const amount = data['totalAmount'] || 0;
+        const cost = data['costPrice'] || (amount * 0.7); // Estimate 30% margin if no cost
+
+        grouped.set(key, {
+          revenue: current.revenue + amount,
+          orders: current.orders + 1,
+          profit: current.profit + (amount - cost)
+        });
+      });
+
+      // Convert to array and sort
+      return Array.from(grouped.entries())
+        .map(([key, value]) => ({
+          date: this.parseDateKey(key, period),
+          ...value
+        }))
+        .sort((a, b) => a.date.getTime() - b.date.getTime());
+    } catch (error) {
+      console.error('[AdminDashboardService] Error getting revenue trend:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get top performing products
+   */
+  async getTopProducts(period: AnalyticsPeriod, limit = 10): Promise<{ 
+    productId: string; 
+    productName: string; 
+    revenue: number; 
+    orders: number; 
+    conversionRate: number;
+    views: number;
+  }[]> {
+    try {
+      const range = this.getPeriodBounds(period).current;
+      const ordersRef = collection(this.firestore, 'orders');
+      
+      const q = query(
+        ordersRef,
+        where('status', '==', 'completed'),
+        where('createdAt', '>=', Timestamp.fromDate(range.start)),
+        where('createdAt', '<', Timestamp.fromDate(range.end))
+      );
+
+      const snapshot = await getDocs(q);
+      
+      // Aggregate by product
+      const productStats = new Map<string, { 
+        name: string; 
+        revenue: number; 
+        orders: number; 
+        views: number;
+      }>();
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const items = data['items'] || [];
+        
+        items.forEach((item: any) => {
+          const id = item.productId || '';
+          const current = productStats.get(id) || { 
+            name: item.productName || 'Unknown', 
+            revenue: 0, 
+            orders: 0,
+            views: 0 
+          };
+          
+          productStats.set(id, {
+            ...current,
+            revenue: current.revenue + (item.price * item.quantity),
+            orders: current.orders + 1
+          });
+        });
+      });
+
+      // Convert to array and calculate conversion rate
+      const results = Array.from(productStats.entries())
+        .map(([productId, stats]) => ({
+          productId,
+          productName: stats.name,
+          revenue: stats.revenue,
+          orders: stats.orders,
+          views: stats.views || stats.orders * 10, // Estimate 10% conversion if no views data
+          conversionRate: stats.views > 0 ? (stats.orders / stats.views) * 100 : 10
+        }))
+        .sort((a, b) => b.revenue - a.revenue)
+        .slice(0, limit);
+
+      return results;
+    } catch (error) {
+      console.error('[AdminDashboardService] Error getting top products:', error);
+      return [];
+    }
+  }
+
+  private getDateKey(date: Date, period: AnalyticsPeriod): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    switch (period) {
+      case 'today':
+        return `${year}-${month}-${day} ${String(date.getHours()).padStart(2, '0')}:00`;
+      case 'week':
+      case 'month':
+        return `${year}-${month}-${day}`;
+      case 'year':
+        return `${year}-${month}`;
+      default:
+        return `${year}-${month}-${day}`;
+    }
+  }
+
+  private parseDateKey(key: string, period: AnalyticsPeriod): Date {
+    const parts = key.split(/[- :]/);
+    const year = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1;
+    
+    switch (period) {
+      case 'today':
+        const day = parseInt(parts[2]);
+        const hour = parseInt(parts[3]);
+        return new Date(year, month, day, hour);
+      case 'week':
+      case 'month':
+        return new Date(year, month, parseInt(parts[2]));
+      case 'year':
+        return new Date(year, month, 1);
+      default:
+        return new Date(year, month, parseInt(parts[2] || '1'));
+    }
+  }
+
+  /**
+   * Get geographic breakdown of quotes and conversions
+   */
+  async getGeographicData(period: AnalyticsPeriod): Promise<Array<{
+    country: string;
+    countryCode: string;
+    region: 'LATAM' | 'EU' | 'APAC' | 'NA' | 'MENA' | 'OTHER';
+    quotes: number;
+    conversions: number;
+    revenue: number;
+  }>> {
+    try {
+      const range = this.getPeriodBounds(period).current;
+      
+      // Get all orders for this period
+      const ordersRef = collection(this.firestore, 'orders');
+      const ordersQuery = query(
+        ordersRef,
+        where('createdAt', '>=', Timestamp.fromDate(range.start)),
+        where('createdAt', '<', Timestamp.fromDate(range.end))
+      );
+
+      // Try to get quote requests (if collection exists)
+      const quotesRef = collection(this.firestore, 'quotes');
+      const quotesQuery = query(
+        quotesRef,
+        where('createdAt', '>=', Timestamp.fromDate(range.start)),
+        where('createdAt', '<', Timestamp.fromDate(range.end))
+      );
+
+      const [ordersSnapshot, quotesSnapshot] = await Promise.all([
+        getDocs(ordersQuery),
+        getDocs(quotesQuery).catch(() => ({ docs: [] as any[] })) // Gracefully handle if collection doesn't exist
+      ]);
+
+      // Aggregate by country
+      const geoMap = new Map<string, {
+        country: string;
+        countryCode: string;
+        region: 'LATAM' | 'EU' | 'APAC' | 'NA' | 'MENA' | 'OTHER';
+        quotes: number;
+        conversions: number;
+        revenue: number;
+      }>();
+
+      // Process quote requests from quotes collection
+      quotesSnapshot.docs.forEach(doc => {
+        const data = doc.data();
+        const countryCode = this.extractCountryCode(data);
+        if (!countryCode) return; // Skip if no country
+
+        const country = this.getCountryName(countryCode);
+        const region = this.getRegion(countryCode);
+
+        if (!geoMap.has(countryCode)) {
+          geoMap.set(countryCode, {
+            country,
+            countryCode,
+            region,
+            quotes: 0,
+            conversions: 0,
+            revenue: 0
+          });
+        }
+
+        const current = geoMap.get(countryCode)!;
+        current.quotes += 1;
+      });
+
+      // Process all orders
+      ordersSnapshot.forEach(doc => {
+        const data = doc.data();
+        const countryCode = this.extractCountryCode(data);
+        if (!countryCode) return; // Skip if no country
+
+        const country = this.getCountryName(countryCode);
+        const region = this.getRegion(countryCode);
+        const status = (data['status'] || 'pending').toString().toLowerCase();
+
+        if (!geoMap.has(countryCode)) {
+          geoMap.set(countryCode, {
+            country,
+            countryCode,
+            region,
+            quotes: 0,
+            conversions: 0,
+            revenue: 0
+          });
+        }
+
+        const current = geoMap.get(countryCode)!;
+        
+        // If we don't have separate quotes, count all orders as "interest"
+        if (quotesSnapshot.docs.length === 0) {
+          current.quotes += 1;
+        }
+        
+        // Count completed/delivered/shipped as conversions
+        if (status === 'completed' || status === 'delivered' || status === 'shipped') {
+          current.conversions += 1;
+          current.revenue += data['total'] || data['totalAmount'] || 0;
+        }
+      });
+
+      return Array.from(geoMap.values())
+        .filter(item => item.quotes > 0 || item.conversions > 0) // Show countries with any activity
+        .sort((a, b) => b.quotes - a.quotes);
+    } catch (error) {
+      console.error('[AdminDashboardService] Error getting geographic data:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Extract country code from order/quote data
+   */
+  private extractCountryCode(data: any): string {
+    // Try various fields where country might be stored
+    let country = 
+      data['countryCode'] ||
+      data['country'] ||
+      data['shippingAddress']?.countryCode ||
+      data['shippingAddress']?.country ||
+      data['billingAddress']?.countryCode ||
+      data['billingAddress']?.country ||
+      data['customerCountry'];
+
+    // If we got a full country name, try to convert it to code
+    if (country && country.length > 2) {
+      country = this.convertCountryNameToCode(country);
+    }
+
+    // Default to empty if no country found - we'll filter these out
+    return country ? String(country).toUpperCase() : '';
+  }
+
+  /**
+   * Convert common country names to ISO codes
+   */
+  private convertCountryNameToCode(name: string): string {
+    const nameToCode: Record<string, string> = {
+      // Common name variations
+      'United States': 'US',
+      'United States of America': 'US',
+      'USA': 'US',
+      'United Kingdom': 'GB',
+      'UK': 'GB',
+      'Brazil': 'BR',
+      'Brasil': 'BR',
+      'Mexico': 'MX',
+      'México': 'MX',
+      'Germany': 'DE',
+      'Deutschland': 'DE',
+      'France': 'FR',
+      'Spain': 'ES',
+      'España': 'ES',
+      'Italy': 'IT',
+      'Italia': 'IT',
+      'Canada': 'CA',
+      'Canadá': 'CA',
+      'Australia': 'AU',
+      'Japan': 'JP',
+      'China': 'CN',
+      'India': 'IN',
+      'Singapore': 'SG',
+      'Netherlands': 'NL',
+      'Argentina': 'AR',
+      'Chile': 'CL',
+      'Colombia': 'CO',
+      'Peru': 'PE',
+      'Perú': 'PE'
+    };
+
+    return nameToCode[name] || name;
+  }
+
+  /**
+   * Get full country name from code
+   */
+  private getCountryName(code: string): string {
+    const countryNames: Record<string, string> = {
+      // LATAM
+      'BR': 'Brazil',
+      'MX': 'Mexico',
+      'AR': 'Argentina',
+      'CL': 'Chile',
+      'CO': 'Colombia',
+      'PE': 'Peru',
+      'VE': 'Venezuela',
+      'EC': 'Ecuador',
+      
+      // Europe
+      'GB': 'United Kingdom',
+      'DE': 'Germany',
+      'FR': 'France',
+      'ES': 'Spain',
+      'IT': 'Italy',
+      'NL': 'Netherlands',
+      'SE': 'Sweden',
+      'NO': 'Norway',
+      'PL': 'Poland',
+      'CH': 'Switzerland',
+      
+      // APAC
+      'CN': 'China',
+      'JP': 'Japan',
+      'KR': 'South Korea',
+      'IN': 'India',
+      'AU': 'Australia',
+      'SG': 'Singapore',
+      'TH': 'Thailand',
+      'VN': 'Vietnam',
+      'ID': 'Indonesia',
+      'MY': 'Malaysia',
+      'PH': 'Philippines',
+      
+      // North America
+      'US': 'United States',
+      'CA': 'Canada',
+      
+      // MENA
+      'AE': 'UAE',
+      'SA': 'Saudi Arabia',
+      'IL': 'Israel',
+      'TR': 'Turkey'
+    };
+
+    return countryNames[code] || code;
+  }
+
+  /**
+   * Determine region from country code
+   */
+  private getRegion(code: string): 'LATAM' | 'EU' | 'APAC' | 'NA' | 'MENA' | 'OTHER' {
+    const latinAmerica = ['BR', 'MX', 'AR', 'CL', 'CO', 'PE', 'VE', 'EC', 'UY', 'PY', 'BO'];
+    const europe = ['GB', 'DE', 'FR', 'ES', 'IT', 'NL', 'SE', 'NO', 'PL', 'CH', 'AT', 'BE', 'DK', 'FI', 'IE', 'PT'];
+    const apac = ['CN', 'JP', 'KR', 'IN', 'AU', 'SG', 'TH', 'VN', 'ID', 'MY', 'PH', 'NZ', 'HK', 'TW'];
+    const northAmerica = ['US', 'CA'];
+    const mena = ['AE', 'SA', 'IL', 'TR', 'EG', 'QA', 'KW', 'OM', 'BH', 'JO', 'LB'];
+
+    if (latinAmerica.includes(code)) return 'LATAM';
+    if (europe.includes(code)) return 'EU';
+    if (apac.includes(code)) return 'APAC';
+    if (northAmerica.includes(code)) return 'NA';
+    if (mena.includes(code)) return 'MENA';
+    
+    return 'OTHER';
+  }
 }
+
