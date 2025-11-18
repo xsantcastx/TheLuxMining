@@ -356,10 +356,10 @@ export class StorageService {
   /**
    * Validate video file
    * @param file - The file to validate
-   * @param maxSizeMB - Maximum file size in MB (default 50MB)
+   * @param maxSizeMB - Maximum size in MB (default: 200)
    * @returns Promise with validation result
    */
-  async validateVideoFile(file: File, maxSizeMB: number = 50): Promise<{ valid: boolean; error?: string }> {
+  async validateVideoFile(file: File, maxSizeMB: number = 200): Promise<{ valid: boolean; error?: string }> {
     return this.videoOptimizer.validateVideoFile(file, maxSizeMB, 60);
   }
 
@@ -377,7 +377,7 @@ export class StorageService {
     
     // Check if it's a video
     if (file.type.startsWith('video/')) {
-      const result = await this.validateVideoFile(file, 50);
+      const result = await this.validateVideoFile(file, 200);
       return { ...result, type: 'video' };
     }
 
