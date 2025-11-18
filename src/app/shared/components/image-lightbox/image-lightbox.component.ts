@@ -7,6 +7,7 @@ export interface LightboxImage {
   altText?: string;
   thumbnailUrl?: string;
   caption?: string;
+  mediaType?: 'image' | 'video';
 }
 
 @Component({
@@ -56,39 +57,50 @@ export interface LightboxImage {
 
         <div class="relative max-w-7xl max-h-[90vh] p-4 flex flex-col gap-4" (click)="$event.stopPropagation()">
           <div class="relative flex-1 flex items-center justify-center">
-            <img
-              [src]="activeImage.url"
-              [alt]="activeAltText"
-              class="max-w-full max-h-[80vh] object-contain"
-              [style.transform]="'scale(' + zoomLevel + ')'"
-              [style.transition]="'transform 0.3s ease'"
-            />
+            @if (activeImage.mediaType === 'video') {
+              <video
+                [src]="activeImage.url"
+                class="max-w-full max-h-[80vh] object-contain"
+                controls
+                autoplay>
+              </video>
+            } @else {
+              <img
+                [src]="activeImage.url"
+                [alt]="activeAltText"
+                class="max-w-full max-h-[80vh] object-contain"
+                [style.transform]="'scale(' + zoomLevel + ')'"
+                [style.transition]="'transform 0.3s ease'"
+              />
+            }
 
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/60 rounded-lg p-2">
-              <button
-                type="button"
-                (click)="zoomOut(); $event.stopPropagation()"
-                class="px-3 py-1 text-white hover:bg-white/20 rounded disabled:opacity-40 disabled:cursor-not-allowed"
-                [disabled]="zoomLevel <= 1"
-                aria-label="Zoom out"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-                </svg>
-              </button>
-              <span class="px-3 py-1 text-white font-medium">{{ Math.round(zoomLevel * 100) }}%</span>
-              <button
-                type="button"
-                (click)="zoomIn(); $event.stopPropagation()"
-                class="px-3 py-1 text-white hover:bg-white/20 rounded disabled:opacity-40 disabled:cursor-not-allowed"
-                [disabled]="zoomLevel >= 3"
-                aria-label="Zoom in"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                </svg>
-              </button>
-            </div>
+            @if (activeImage.mediaType !== 'video') {
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/60 rounded-lg p-2">
+                <button
+                  type="button"
+                  (click)="zoomOut(); $event.stopPropagation()"
+                  class="px-3 py-1 text-white hover:bg-white/20 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                  [disabled]="zoomLevel <= 1"
+                  aria-label="Zoom out"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                  </svg>
+                </button>
+                <span class="px-3 py-1 text-white font-medium">{{ Math.round(zoomLevel * 100) }}%</span>
+                <button
+                  type="button"
+                  (click)="zoomIn(); $event.stopPropagation()"
+                  class="px-3 py-1 text-white hover:bg-white/20 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                  [disabled]="zoomLevel >= 3"
+                  aria-label="Zoom in"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                </button>
+              </div>
+            }
 
             @if (hasMultipleImages) {
               <div class="absolute bottom-4 right-4 text-sm font-medium text-white bg-black/70 px-3 py-1 rounded-full">

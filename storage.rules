@@ -19,26 +19,35 @@ service firebase.storage {
              request.resource.size < 10 * 1024 * 1024; // 10MB max (matches frontend validation)
     }
     
-    // Product images - Admin can write, everyone can read
+    function isValidVideo() {
+      return request.resource.contentType.matches('video/.*') &&
+             request.resource.size < 200 * 1024 * 1024; // 200MB max for videos
+    }
+    
+    function isValidMedia() {
+      return isValidImage() || isValidVideo();
+    }
+    
+    // Product images and videos - Admin can write, everyone can read
     // Supports both cover images and gallery images
     match /products/{allPaths=**} {
       allow read: if true;
-      allow write: if isAdmin() && isValidImage();
+      allow write: if isAdmin() && isValidMedia();
       allow delete: if isAdmin();
     }
     
-    // Gallery images - Admin can write, everyone can read
+    // Gallery images and videos - Admin can write, everyone can read
     // Updated to match single-level path: gallery/{imageName}
     match /gallery/{imageName} {
       allow read: if true;
-      allow write: if isAdmin() && isValidImage();
+      allow write: if isAdmin() && isValidMedia();
       allow delete: if isAdmin();
     }
     
     // Legacy gallery with category path (kept for backward compatibility)
     match /gallery/{category}/{imageName} {
       allow read: if true;
-      allow write: if isAdmin() && isValidImage();
+      allow write: if isAdmin() && isValidMedia();
       allow delete: if isAdmin();
     }
     

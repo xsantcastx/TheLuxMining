@@ -27,8 +27,11 @@ export interface Media {
   /** File size in bytes */
   size: number;
 
-  /** MIME type (e.g., 'image/jpeg', 'image/png') */
+  /** MIME type (e.g., 'image/jpeg', 'image/png', 'video/mp4') */
   mimeType: string;
+
+  /** Media type (image or video) */
+  mediaType?: 'image' | 'video';
 
   /** Upload timestamp */
   uploadedAt: Date;
@@ -64,6 +67,7 @@ export interface MediaCreateInput {
   height: number;
   size: number;
   mimeType: string;
+  mediaType?: 'image' | 'video';
   uploadedBy: string;
   tags: string[];
   altText?: string;
@@ -86,7 +90,7 @@ export const MEDIA_VALIDATION = {
   MAX_SIZE: 10 * 1024 * 1024,
 
   /** Allowed MIME types */
-  ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+  ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'video/mp4', 'video/webm', 'video/ogg'],
 
   /** Gallery category tags (for gallery images) */
   GALLERY_TAGS: ['kitchen', 'bathroom', 'facade', 'industrial', 'other'] as const,

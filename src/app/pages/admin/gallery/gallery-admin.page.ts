@@ -903,6 +903,7 @@ export class GalleryAdminComponent extends LoadingComponentBase implements OnIni
           height: validation.height || 0,
           size: file.size,
           mimeType: file.type,
+          mediaType: file.type.startsWith('video/') ? 'video' : 'image',
           uploadedBy: currentUser.uid,
           tags: tags as string[],
           altText: altText,

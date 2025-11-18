@@ -25,11 +25,20 @@
             class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-black/40 border border-bitcoin-orange/20 shadow-2xl shadow-bitcoin-orange/10 mb-4 transition-all cursor-zoom-in hover:border-bitcoin-orange/40"
             (click)="openLightboxAt(currentImageIndex)">
             @if (currentCarouselImage) {
-              <img
-                [src]="currentCarouselImage.url"
-                [alt]="currentCarouselImage.altText || producto.name"
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                loading="lazy"/>
+              @if (currentCarouselImage.mediaType === 'video') {
+                <video
+                  [src]="currentCarouselImage.url"
+                  class="w-full h-full object-cover"
+                  controls
+                  preload="metadata">
+                </video>
+              } @else {
+                <img
+                  [src]="currentCarouselImage.url"
+                  [alt]="currentCarouselImage.altText || producto.name"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  loading="lazy"/>
+              }
             } @else {
               <div class="w-full h-full flex items-center justify-center bg-black/60">
                 <svg class="w-24 h-24 text-bitcoin-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,17 +74,30 @@
             @for (galleryImage of galleryImages; track galleryImage.id) {
               @let isActive = isCurrentCarouselImage(galleryImage);
               <div
-                class="aspect-square rounded-lg bg-black/40 overflow-hidden cursor-pointer transition-all border"
+                class="aspect-square rounded-lg bg-black/40 overflow-hidden cursor-pointer transition-all border relative"
                 [ngClass]="{
                   'border-bitcoin-orange/50 ring-2 ring-bitcoin-orange': isActive,
                   'border-bitcoin-orange/20 hover:ring-2 hover:ring-bitcoin-orange': !isActive
                 }"
                 (click)="openLightboxForGalleryImage(galleryImage)">
-                <img
-                  [src]="galleryImage.thumbnailUrl || galleryImage.url"
-                  [alt]="galleryImage.altText || producto.name"
-                  class="w-full h-full object-cover"
-                  loading="lazy"/>
+                @if (galleryImage.mediaType === 'video') {
+                  <video
+                    [src]="galleryImage.url"
+                    class="w-full h-full object-cover"
+                    preload="metadata">
+                  </video>
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                } @else {
+                  <img
+                    [src]="galleryImage.thumbnailUrl || galleryImage.url"
+                    [alt]="galleryImage.altText || producto.name"
+                    class="w-full h-full object-cover"
+                    loading="lazy"/>
+                }
               </div>
             }
             @for (placeholder of placeholderSlots; track placeholder) {
