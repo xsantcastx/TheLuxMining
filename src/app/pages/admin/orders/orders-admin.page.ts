@@ -4,7 +4,7 @@ import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import { Firestore, collection, query, orderBy, onSnapshot, doc, updateDoc, Timestamp } from '@angular/fire/firestore';
 
 interface OrderItem {
@@ -68,7 +68,7 @@ interface Order {
 @Component({
   selector: 'app-orders-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, TranslateModule, AdminQuickActionsComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, AdminSidebarComponent],
   templateUrl: './orders-admin.page.html',
   styleUrl: './orders-admin.page.scss'
 })

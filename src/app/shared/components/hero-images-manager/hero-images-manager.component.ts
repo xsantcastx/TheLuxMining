@@ -165,10 +165,9 @@ export class HeroImagesManagerComponent implements OnInit {
             this.uploadProgress = progress.progress;
             
             if (progress.downloadURL && this.editingImage) {
+              // New storage service saves WebP-only, so downloadURL is already WebP
               this.editingImage.url = progress.downloadURL;
-              if (progress.webpURL) {
-                this.editingImage.webpUrl = progress.webpURL;
-              }
+              this.editingImage.webpUrl = progress.downloadURL;
               this.showMessage('Image uploaded successfully! Fill in details and click Save.', 'success');
             }
           }

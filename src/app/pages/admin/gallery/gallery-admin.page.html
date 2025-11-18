@@ -1,31 +1,20 @@
-<div class="section-stack admin-gallery-page min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a]">
+<!-- Admin Sidebar -->
+<app-admin-sidebar />
+
+<div class="md:ml-64 section-stack admin-gallery-page min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a]">
   
   <!-- Admin Header -->
   <div class="bg-gradient-to-r from-bitcoin-dark via-[#13151a] to-bitcoin-dark border-b border-bitcoin-orange/20 shadow-bitcoin">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <a routerLink="/admin" class="hover:text-bitcoin-orange transition-colors">
-            <svg class="w-6 h-6 text-bitcoin-gray hover:text-bitcoin-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-          </a>
           <h1 class="text-xl font-bold bitcoin-gradient-text">{{ 'admin.gallery.title' | translate }}</h1>
-        </div>
-        <div class="flex items-center gap-4">
-          <a routerLink="/admin" class="text-sm text-bitcoin-gray hover:text-bitcoin-orange transition-colors">{{ 'admin.title' | translate }}</a>
-          <button (click)="logout()" class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-100 rounded-xl transition-all">
-            {{ 'client.logout' | translate }}
-          </button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
-    <!-- Quick Actions -->
-    <app-admin-quick-actions currentPage="/admin/gallery"></app-admin-quick-actions>
     
     <!-- Success/Error Messages -->
     @if (successMessage) {

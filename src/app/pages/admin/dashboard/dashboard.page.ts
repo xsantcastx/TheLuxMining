@@ -8,13 +8,13 @@ import {
   AdminDashboardService,
   AdminDashboardSnapshot
 } from '../../../services/admin-dashboard.service';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import { LoadingComponentBase } from '../../../core/classes/loading-component.base';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, AdminQuickActionsComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, AdminSidebarComponent],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss'
 })

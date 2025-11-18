@@ -1,14 +1,12 @@
-<div class="section-stack min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a]">
+<!-- Admin Sidebar -->
+<app-admin-sidebar />
+
+<div class="md:ml-64 section-stack min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a]">
   <!-- Header -->
   <div class="bg-bitcoin-dark/95 backdrop-blur-md border-b border-bitcoin-orange/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between py-6">
         <div class="flex items-center space-x-4">
-          <a routerLink="/admin" class="text-bitcoin-gray hover:text-bitcoin-orange transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </a>
           <div>
             <h1 class="text-2xl font-bold bitcoin-gradient-text">{{ 'admin.manage_users' | translate }}</h1>
             <p class="text-sm text-bitcoin-gray/70">{{ 'admin.users_description' | translate }}</p>
@@ -20,9 +18,6 @@
 
   <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
-    <!-- Quick Actions -->
-    <app-admin-quick-actions currentPage="/admin/users"></app-admin-quick-actions>
     
     <!-- Success/Error Messages -->
     <div *ngIf="successMessage" class="mb-6 bg-bitcoin-gold/20 border border-bitcoin-gold/30 text-bitcoin-gold rounded-lg p-4 flex items-center">

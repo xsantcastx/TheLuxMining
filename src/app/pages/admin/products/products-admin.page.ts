@@ -16,7 +16,7 @@ import { Category, Model, Tag, TemplateComposition } from '../../../models/catal
 import { MediaCreateInput, MEDIA_VALIDATION } from '../../../models/media';
 import { BenefitTemplate } from '../../../models/benefit-template';
 import { GalleryUploaderComponent } from '../../../shared/components/gallery-uploader/gallery-uploader.component';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import { LoadingComponentBase } from '../../../core/classes/loading-component.base';
 
 interface CatalogOption {
@@ -32,7 +32,7 @@ interface CatalogOption {
 @Component({
   selector: 'app-products-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, TranslateModule, GalleryUploaderComponent, AdminQuickActionsComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, TranslateModule, GalleryUploaderComponent, AdminSidebarComponent],
   templateUrl: './products-admin.page.html',
   styleUrl: './products-admin.page.scss'
 })

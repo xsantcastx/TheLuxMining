@@ -6,12 +6,12 @@ import { ProductsService } from '../../../services/products.service';
 import { AuthService } from '../../../services/auth.service';
 import { ProductReview } from '../../../models/review';
 import { Product } from '../../../models/product';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 
 @Component({
   selector: 'app-admin-reviews',
   standalone: true,
-  imports: [CommonModule, FormsModule, AdminQuickActionsComponent],
+  imports: [CommonModule, FormsModule, AdminSidebarComponent],
   templateUrl: './reviews.page.html',
   styleUrl: './reviews.page.scss'
 })

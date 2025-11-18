@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import {
   AdminDashboardService,
   AdminActivityItem,
@@ -33,7 +33,7 @@ interface FutureInitiative {
 @Component({
   selector: 'app-analytics-admin',
   standalone: true,
-  imports: [CommonModule, TranslateModule, AdminQuickActionsComponent],
+  imports: [CommonModule, TranslateModule, AdminSidebarComponent],
   templateUrl: './analytics-admin.page.html',
   styleUrls: ['./analytics-admin.page.scss']
 })

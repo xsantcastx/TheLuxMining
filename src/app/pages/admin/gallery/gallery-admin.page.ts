@@ -12,7 +12,7 @@ import { TagService } from '../../../services/tag.service';
 import { Product } from '../../../models/product';
 import { Media, MediaTag, MediaCreateInput } from '../../../models/media';
 import { Tag } from '../../../models/catalog';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import { LoadingComponentBase } from '../../../core/classes/loading-component.base';
 
 interface GalleryProjectSummary {
@@ -32,7 +32,7 @@ interface GalleryProjectSummary {
 @Component({
   selector: 'app-gallery-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, TranslateModule, AdminQuickActionsComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslateModule, AdminSidebarComponent],
   templateUrl: './gallery-admin.page.html',
   styleUrl: './gallery-admin.page.scss'
 })

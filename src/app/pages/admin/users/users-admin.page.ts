@@ -4,13 +4,13 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService, UserProfile } from '../../../services/auth.service';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import { LoadingComponentBase } from '../../../core/classes/loading-component.base';
 
 @Component({
   selector: 'app-users-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, TranslateModule, AdminQuickActionsComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, AdminSidebarComponent],
   templateUrl: './users-admin.page.html',
   styleUrl: './users-admin.page.scss'
 })

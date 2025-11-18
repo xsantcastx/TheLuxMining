@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 import { ImagePickerComponent } from '../../../shared/components/image-picker/image-picker.component';
 import { HeroImagesManagerComponent } from '../../../shared/components/hero-images-manager/hero-images-manager.component';
 import { LoadingComponentBase } from '../../../core/classes/loading-component.base';
@@ -50,7 +50,7 @@ interface NotificationSummaryCard {
 @Component({
   selector: 'app-settings-admin-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, AdminQuickActionsComponent, ImagePickerComponent, HeroImagesManagerComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, AdminSidebarComponent, ImagePickerComponent, HeroImagesManagerComponent],
   templateUrl: './settings-admin.page.html',
   styleUrl: './settings-admin.page.scss'
 })

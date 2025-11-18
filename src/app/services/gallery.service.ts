@@ -57,6 +57,9 @@ export interface GalleryImage {
   relatedProductIds?: string[];
   uploadedAt: Date;
   uploadedBy?: string;
+  mediaType?: 'image' | 'video'; // Support for videos
+  duration?: number; // Video duration in seconds
+  dimensions?: { width: number; height: number };
 }
 
 export interface GalleryCategory {

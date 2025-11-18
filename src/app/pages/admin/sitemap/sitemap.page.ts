@@ -4,38 +4,29 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SitemapService } from '../../../services/sitemap.service';
 import { AuthService } from '../../../services/auth.service';
-import { AdminQuickActionsComponent } from '../../../shared/components/admin-quick-actions/admin-quick-actions.component';
+import { AdminSidebarComponent } from '../../../shared/components/admin-sidebar/admin-sidebar.component';
 
 @Component({
   selector: 'app-admin-sitemap',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, AdminQuickActionsComponent],
+  imports: [CommonModule, TranslateModule, AdminSidebarComponent],
   template: `
-<div class="min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a]">
+<!-- Admin Sidebar -->
+<app-admin-sidebar />
+
+<div class="md:ml-64 min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a]">
   <!-- Header -->
   <div class="bg-gradient-to-r from-bitcoin-dark via-[#13151a] to-bitcoin-dark border-b border-bitcoin-orange/20 shadow-bitcoin">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <a routerLink="/admin" class="hover:text-bitcoin-orange transition-colors">
-            <svg class="w-6 h-6 text-bitcoin-gray hover:text-bitcoin-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-          </a>
           <h1 class="text-xl font-bold bitcoin-gradient-text">Sitemap Generator</h1>
-        </div>
-        <div class="flex items-center gap-2">
-          <a routerLink="/admin" class="text-sm text-bitcoin-gray hover:text-bitcoin-orange transition-colors">Admin</a>
-          <button (click)="logout()" class="px-4 py-2 text-sm bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-100 rounded-xl transition-all">
-            Logout
-          </button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <app-admin-quick-actions currentPage="/admin/sitemap"></app-admin-quick-actions>
 
     @if (error()) {
       <div class="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-xl text-red-400">

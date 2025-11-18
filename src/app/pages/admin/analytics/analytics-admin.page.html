@@ -1,5 +1,8 @@
-<div class="section-stack min-h-screen bg-ts-bg">
-  <div class="bg-gradient-to-r from-ts-bg via-gray-900 to-ts-bg border-b border-white/10">
+<!-- Admin Sidebar -->
+<app-admin-sidebar></app-admin-sidebar>
+
+<div class="section-stack min-h-screen bg-gradient-to-b from-[#0a0b0d] to-[#13151a] md:ml-64">
+  <div class="bg-gradient-to-r from-bitcoin-dark via-[#13151a] to-bitcoin-dark border-b border-bitcoin-orange/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
         <div class="space-y-2 max-w-3xl">
@@ -31,11 +34,9 @@
       </div>
     }
 
-    <app-admin-quick-actions [currentPage]="'/admin/analytics'"></app-admin-quick-actions>
-
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-10">
       @for (metric of metrics; track metric.key) {
-        <div class="bg-gray-900/50 border border-white/10 rounded-xl p-6 hover:border-bitcoin-orange/40 transition-all duration-300">
+        <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-xl p-6 hover:border-bitcoin-orange/40 transition-all duration-300 shadow-bitcoin">
           <div class="flex items-start justify-between mb-4">
             <div [class]="metric.colorClass + ' p-3 rounded-xl border'">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +54,7 @@
     </div>
 
     @if (recentActivity.length > 0) {
-      <div class="bg-gray-900/50 border border-white/10 rounded-xl p-6 mb-8">
+      <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-xl p-6 mb-8 shadow-bitcoin">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold text-white">{{ 'admin.analytics.recent_activity' | translate }}</h2>
           <span class="text-xs uppercase tracking-wide text-white/60">
@@ -77,19 +78,19 @@
         </div>
       </div>
     } @else {
-      <div class="bg-gray-900/50 border border-white/10 rounded-xl p-8 text-center mb-8">
+      <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-xl p-8 text-center mb-8 shadow-bitcoin">
         <p class="text-white/70">{{ 'admin.analytics.no_activity' | translate }}</p>
       </div>
     }
 
-    <div class="bg-gray-900/50 border border-white/10 rounded-2xl p-8">
+    <div class="bg-bitcoin-dark/40 backdrop-blur-sm border border-bitcoin-gray/20 rounded-2xl p-8 shadow-bitcoin">
       <div class="space-y-4 max-w-4xl">
         <h3 class="text-2xl font-semibold text-white">{{ 'admin.analytics.future_title' | translate }}</h3>
         <p class="text-white/70 leading-relaxed">{{ 'admin.analytics.future_description' | translate }}</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         @for (initiative of futureInitiatives; track initiative.titleKey) {
-          <div class="bg-gray-950/40 border border-white/10 rounded-xl p-5 hover:border-bitcoin-orange/30 transition-all">
+          <div class="bg-bitcoin-dark/60 border border-bitcoin-gray/30 rounded-xl p-5 hover:border-bitcoin-orange/30 transition-all">
             <div class="flex items-start justify-between gap-3">
               <h4 class="text-sm font-semibold text-white uppercase tracking-wide">{{ initiative.titleKey | translate }}</h4>
               <span [class]="getStatusBadgeClasses(initiative.tone)">

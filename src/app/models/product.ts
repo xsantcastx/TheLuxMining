@@ -21,7 +21,8 @@ export interface Product {
   variants?: ProductVariant[];
   specs?: ProductSpecs;
   coverImage?: string;     // Media ID or legacy URL
-  galleryImageIds?: string[];  // Array of media IDs
+  galleryImageIds?: string[];  // Array of media IDs (images)
+  galleryVideoIds?: string[];  // Array of video media IDs
   tags?: string[];
   seo?: {
     title?: string;

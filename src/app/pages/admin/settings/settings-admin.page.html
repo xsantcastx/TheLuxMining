@@ -1,4 +1,7 @@
-<div class="section-stack min-h-screen bg-ts-bg">
+<!-- Admin Sidebar -->
+<app-admin-sidebar />
+
+<div class="md:ml-64 section-stack min-h-screen bg-ts-bg">
   <!-- Header -->
   <div class="bg-gradient-to-r from-ts-bg via-gray-900 to-ts-bg border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -7,11 +10,6 @@
       </h1>
       <p class="text-white/70">{{ 'admin.settings.subtitle' | translate }}</p>
     </div>
-  </div>
-
-  <!-- Quick Actions -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-    <app-admin-quick-actions [currentPage]="'/admin/settings'"></app-admin-quick-actions>
   </div>
 
   <!-- Message -->
