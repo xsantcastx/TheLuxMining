@@ -240,7 +240,7 @@ export class DetalleComponent implements OnInit, AfterViewInit {
       description: description,
       imageUrl: this.coverImage?.url || this.producto.imageUrl || '',
       price: this.producto.price || 0,
-      currency: 'EUR',
+      currency: 'USD',
       sku: this.producto.sku || `TLM-${this.producto.id}`,
       brand: 'TheLuxMining',
       availability: (this.producto.stock && this.producto.stock > 0) ? 'InStock' : 'OutOfStock',
