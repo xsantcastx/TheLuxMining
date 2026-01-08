@@ -1,0 +1,167 @@
+@if (isOpen) {
+  <div class="fixed inset-0 z-50 overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" (click)="closeModal()"></div>
+
+    <!-- Modal -->
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative bg-gradient-to-br from-bitcoin-dark via-[#0f1116] to-bitcoin-dark border-2 border-bitcoin-orange/20 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] flex flex-col" (click)="$event.stopPropagation()">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between p-6 border-b border-bitcoin-gray/20">
+          <div>
+            <h2 class="text-2xl font-bold bitcoin-gradient-text">{{ title }}</h2>
+            <p class="text-sm text-bitcoin-gray mt-1">
+              @if (selectionMode === 'single') {
+                Select one item
+              } @else {
+                Select one or more items ({{ selectedMedia.length }} selected)
+              }
+            </p>
+          </div>
+          <button type="button" (click)="closeModal()" class="p-2 hover:bg-bitcoin-gray/10 rounded-lg transition-colors">
+            <svg class="w-6 h-6 text-bitcoin-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="p-6 border-b border-bitcoin-gray/20 bg-bitcoin-dark/40">
+          <div class="flex flex-col md:flex-row gap-4">
+            <!-- Search -->
+            <div class="flex-1">
+              <input
+                type="text"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="onSearchChange()"
+                placeholder="Search by filename, alt text, or caption..."
+                class="w-full px-4 py-3 bg-bitcoin-dark/60 border-2 border-bitcoin-gray/20 rounded-xl text-white placeholder-bitcoin-gray focus:border-bitcoin-orange/50 focus:outline-none"
+              />
+            </div>
+
+            <!-- Tag Filter -->
+            <div class="flex gap-2 flex-wrap">
+              <button
+                type="button"
+                (click)="onTagChange('all')"
+                [class.bg-bitcoin-orange]="selectedTag === 'all'"
+                [class.text-white]="selectedTag === 'all'"
+                [class.bg-bitcoin-gray/20]="selectedTag !== 'all'"
+                [class.text-bitcoin-gray]="selectedTag !== 'all'"
+                class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+              >
+                All ({{ getTagCount('all') }})
+              </button>
+              @for (tag of productTags; track tag) {
+                <button
+                  type="button"
+                  (click)="onTagChange(tag)"
+                  [class.bg-bitcoin-orange]="selectedTag === tag"
+                  [class.text-white]="selectedTag === tag"
+                  [class.bg-bitcoin-gray/20]="selectedTag !== tag"
+                  [class.text-bitcoin-gray]="selectedTag !== tag"
+                  class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors capitalize"
+                >
+                  {{ tag }} ({{ getTagCount(tag) }})
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Grid -->
+        <div class="flex-1 overflow-y-auto p-6">
+          @if (isLoading) {
+            <div class="flex items-center justify-center py-12">
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-bitcoin-orange"></div>
+            </div>
+          } @else if (filteredMedia.length === 0) {
+            <div class="text-center py-12">
+              <svg class="mx-auto h-12 w-12 text-bitcoin-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <p class="mt-4 text-bitcoin-gray">No media found</p>
+            </div>
+          } @else {
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              @for (media of filteredMedia; track media.id) {
+                <div
+                  (click)="toggleMediaSelection(media)"
+                  [class.ring-4]="isSelected(media)"
+                  [class.ring-bitcoin-orange]="isSelected(media)"
+                  class="relative group rounded-lg overflow-hidden border-2 border-bitcoin-gray/20 bg-bitcoin-dark/40 cursor-pointer hover:border-bitcoin-orange/50 transition-all"
+                >
+                  <!-- Selection Indicator -->
+                  @if (isSelected(media)) {
+                    <div class="absolute top-2 right-2 z-10 w-6 h-6 bg-bitcoin-orange rounded-full flex items-center justify-center">
+                      <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                    </div>
+                  }
+
+                  <!-- Media Preview -->
+                  @if (getMediaType(media) === 'image') {
+                    <div class="aspect-video bg-bitcoin-dark/60">
+                      <img 
+                        [src]="media.thumbnailUrl || media.url" 
+                        [alt]="media.altText || media.filename"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                  } @else {
+                    <div class="aspect-video bg-bitcoin-dark/60 flex items-center justify-center relative">
+                      <video [src]="media.url" class="w-full h-full object-cover"></video>
+                      <div class="absolute inset-0 flex items-center justify-center bg-black/50">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- Media Info -->
+                  <div class="p-3">
+                    <p class="text-xs text-white font-medium truncate">{{ media.filename }}</p>
+                    <p class="text-xs text-bitcoin-gray">{{ media.width }}x{{ media.height }}px</p>
+                    @if (media.tags && media.tags.length > 0) {
+                      <div class="flex flex-wrap gap-1 mt-2">
+                        @for (tag of media.tags; track tag) {
+                          <span class="px-2 py-0.5 bg-bitcoin-orange/20 text-bitcoin-orange text-xs rounded border border-bitcoin-orange/30">{{ tag }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between p-6 border-t border-bitcoin-gray/20 bg-bitcoin-dark/40">
+          <button
+            type="button"
+            (click)="closeModal()"
+            class="px-6 py-3 bg-bitcoin-dark/40 hover:bg-bitcoin-dark/60 border-2 border-bitcoin-gray/20 text-bitcoin-gray font-bold text-base rounded-xl transition-all duration-300"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            (click)="confirmSelection()"
+            [disabled]="selectedMedia.length === 0"
+            class="px-6 py-3 bg-bitcoin-orange/30 hover:bg-bitcoin-orange/40 text-bitcoin-orange border-2 border-bitcoin-orange/30 text-base font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            @if (selectionMode === 'single') {
+              Select
+            } @else {
+              Select {{ selectedMedia.length }} item{{ selectedMedia.length !== 1 ? 's' : '' }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

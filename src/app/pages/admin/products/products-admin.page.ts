@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import heic2any from 'heic2any';
 import { AuthService } from '../../../services/auth.service';
 import { ProductsService } from '../../../services/products.service';
 import { CategoryService } from '../../../services/category.service';
@@ -92,6 +93,8 @@ export class ProductsAdminComponent extends LoadingComponentBase implements OnIn
   galleryMediaIds: string[] = []; // Media document IDs for gallery images
   uploadProgress: number = 0;
   isUploading = false;
+  isGalleryUploading = false; // Track gallery uploader status
+  isConvertingCover = false; // Track HEIC conversion for cover image
 
   // Auto-fill preview
   autoFillPreview: TemplateComposition | null = null;
@@ -895,7 +898,43 @@ export class ProductsAdminComponent extends LoadingComponentBase implements OnIn
       return;
     }
 
-    const file = input.files[0];
+    let file = input.files[0];
+
+    // Check if it's a HEIC file and convert it
+    const fileName = file.name.toLowerCase();
+    const isHEIC = fileName.endsWith('.heic') || fileName.endsWith('.heif') || 
+                    file.type === 'image/heic' || file.type === 'image/heif';
+    
+    if (isHEIC) {
+      this.isConvertingCover = true;
+      this.errorMessage = '';
+      try {
+        console.log('Converting HEIC cover image to JPG...');
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: 'image/jpeg',
+          quality: 0.9
+        });
+
+        const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        const newFileName = file.name.replace(/\.heic$/i, '.jpg').replace(/\.heif$/i, '.jpg');
+        file = new File([blob], newFileName, { 
+          type: 'image/jpeg',
+          lastModified: file.lastModified 
+        });
+        
+        this.successMessage = `✅ Converted ${fileName} to JPG`;
+        setTimeout(() => this.successMessage = '', 3000);
+        console.log(`✅ Converted ${fileName} → ${newFileName}`);
+      } catch (error) {
+        console.error('HEIC conversion error:', error);
+        this.errorMessage = 'Failed to convert HEIC file. Please convert to JPG manually or use a different image.';
+        this.isConvertingCover = false;
+        return;
+      } finally {
+        this.isConvertingCover = false;
+      }
+    }
 
     // Validate file type
     const validation = this.storageService.validateImageFile(file);
@@ -972,6 +1011,12 @@ export class ProductsAdminComponent extends LoadingComponentBase implements OnIn
   onGalleryMediaIdsChange(mediaIds: string[]) {
     this.galleryMediaIds = mediaIds;
     console.log('✅ Gallery media IDs updated:', mediaIds.length);
+  }
+
+  // Handle gallery upload status from GalleryUploaderComponent
+  onGalleryUploadingChange(isUploading: boolean) {
+    this.isGalleryUploading = isUploading;
+    console.log('Gallery upload status:', isUploading);
   }
 
   // Get current product slug for gallery uploader
@@ -1344,8 +1389,11 @@ export class ProductsAdminComponent extends LoadingComponentBase implements OnIn
     // Required: at least one gallery image
     const hasGallery = this.galleryMediaIds.length > 0 || (this.selectedProduct?.galleryImageIds?.length || 0) > 0;
     
+    // Cannot publish while images are uploading
+    const notUploading = !this.isUploading && !this.isGalleryUploading;
+    
     // All validations must pass
-    return hasName && hasCategory && hasModel && hasCover && hasGallery;
+    return hasName && hasCategory && hasModel && hasCover && hasGallery && notUploading;
   }
 
   /**
@@ -1375,6 +1423,10 @@ export class ProductsAdminComponent extends LoadingComponentBase implements OnIn
     const hasGallery = this.galleryMediaIds.length > 0 || (this.selectedProduct?.galleryImageIds?.length || 0) > 0;
     if (!hasGallery) {
       blockers.push('At least one gallery image');
+    }
+
+    if (this.isUploading || this.isGalleryUploading) {
+      blockers.push('⏳ Wait for images to finish uploading');
     }
     
     return blockers;

@@ -30,6 +30,7 @@ export class GalleryUploaderComponent implements OnInit {
   @Input() productCategorySlug: string = '';
   @Input() availableTags: string[] = []; // Custom tags from parent component
   @Output() mediaIdsChange = new EventEmitter<string[]>();
+  @Output() uploadingChange = new EventEmitter<boolean>(); // Notify parent when upload status changes
 
   previews: GalleryImagePreview[] = [];
   existingMedia: Media[] = [];
@@ -195,6 +196,8 @@ export class GalleryUploaderComponent implements OnInit {
       return;
     }
 
+    this.uploadingChange.emit(true); // Notify parent that upload started
+
     const uploadPromises = this.previews
       .filter(p => !p.uploading && !p.mediaId)
       .map(preview => this.uploadSingle(preview, user.uid));
@@ -203,6 +206,8 @@ export class GalleryUploaderComponent implements OnInit {
     
     // Emit all media IDs (existing + new)
     this.emitMediaIds();
+
+    this.uploadingChange.emit(false); // Notify parent that upload finished
   }
 
   private async uploadSingle(preview: GalleryImagePreview, userId: string): Promise<void> {

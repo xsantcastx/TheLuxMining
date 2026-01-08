@@ -1,6 +1,6 @@
 {
   "page_titles": {
-    "home": "Hardware Premium de Minería Bitcoin",
+    "home": "Mineros Solo Bitcoin Premium y Accesorios Crypto",
     "products": "Productos de Minería",
     "product_details": "Detalles del Producto",
     "gallery": "Galería",
@@ -29,15 +29,15 @@
   },
   "home": {
     "hero": {
-      "title": "Mina Tu Futuro",
-      "subtitle": " Donde la tecnologia cripto se convierte en estilo de vida.\nExplora equipo de minera, almacenamiento seguro y gadgets que muestran tu pasion por el futuro descentralizado.\n Innovacion, seguridad y diseño  sin límites.",
-      "description": "Únete a la revolución. Maximiza tus ganancias con mineros ASIC de última generación diseñados para el máximo rendimiento y eficiencia incomparable.",
-      "cta_primary": "Explorar Mineros",
-      "cta_secondary": "Solicitar CotizaciÃ³n"
+      "title": "Donde el Hardware Bitcoin Se Convierte en Arte de Escritorio",
+      "subtitle": "Mineros solo premium, almacenamiento frío y piezas de estilo de vida crypto—diseñados para lucir tan bien como funcionan.",
+      "description": "Construcciones artesanales de acrílico, esenciales de almacenamiento frío y regalos para entusiastas de Bitcoin.",
+      "cta_primary": "Ver Mineros Solo",
+      "cta_secondary": "Ver Galería"
     },
     "featured": {
-      "title": "Hardware de MinerÃ­a Destacado",
-      "subtitle": "Descubre nuestras Ãºltimas soluciones de minerÃ­a Bitcoin",
+      "title": "Lanzamientos Destacados",
+      "subtitle": "Ediciones limitadas—cuando se acaban, se acaban",
       "latest": "Productos Recientes",
       "flagship": "Mineros Insignia",
       "professional": "Serie Profesional",
@@ -50,19 +50,19 @@
       "view_full": "Ver GalerÃ­a Completa â†’"
     },
     "why_choose": {
-      "title": "Â¿Por QuÃ© Elegir TheLuxMining?",
-      "subtitle": "Tu Ã‰xito Es Nuestra MisiÃ³n",
+      "title": "¿Por Qué TheLuxMining?",
+      "subtitle": "Donde la artesanía se encuentra con crypto",
       "hashrate": {
-        "title": "Tasa de Hash MÃ¡xima",
-        "description": "Rendimiento lÃ­der en la industria con tecnologÃ­a ASIC de vanguardia, maximizando tu rentabilidad en minerÃ­a Bitcoin."
+        "title": "Construcciones Artesanales de Acrílico",
+        "description": "Artesanía premium en acrílico con personalización por grabado láser disponible."
       },
       "efficiency": {
-        "title": "Eficiencia Superior",
-        "description": "Consumo de energÃ­a optimizado con sistemas de enfriamiento avanzados, entregando la mejor relaciÃ³n J/TH del mercado."
+        "title": "Probado Antes de Enviar",
+        "description": "Cada unidad probada y verificada para asegurar que llegue lista para minar."
       },
       "roi": {
-        "title": "ROI MÃ¡ximo",
-        "description": "Confiabilidad de nivel empresarial y garantÃ­as de tiempo de actividad, asegurando retornos consistentes en tu inversiÃ³n minera."
+        "title": "Configuración Fácil para Principiantes",
+        "description": "Guías de configuración simples y soporte amigable para empezar a minar rápidamente."
       }
     },
     "cta": {
@@ -77,41 +77,41 @@
     },
     "services": {
       "title": "Nuestros Servicios",
-      "subtitle": "Soluciones Completas de Minería Bitcoin",
+      "subtitle": "Soluciones Completas de Minería Solo",
       "hardware": {
-        "title": "Hardware Premium",
-        "description": "Mineros ASIC de primera línea de fabricantes confiables, optimizados para máxima tasa de hash y eficiencia energética."
+        "title": "Construcciones Premium de Acrílico",
+        "description": "Mineros solo artesanales de acrílico que combinan funcionalidad con estética digna de escritorio."
       },
       "setup": {
-        "title": "Configuración Profesional",
-        "description": "Servicios expertos de instalación y configuración para que tu operación minera funcione al máximo rendimiento."
+        "title": "Grabado Personalizado",
+        "description": "Personalización por grabado láser para hacer tu minero verdaderamente único."
       },
       "support": {
-        "title": "Soporte 24/7",
-        "description": "Asistencia técnica las 24 horas para garantizar que tus equipos mantengan el tiempo de actividad y rentabilidad óptimos."
+        "title": "Guías de Configuración y Soporte",
+        "description": "Instrucciones simples de configuración y soporte amigable para ayudarte a empezar a minar solo."
       },
       "consulting": {
-        "title": "Consultoría Minera",
-        "description": "Orientación estratégica sobre selección de hardware, planificación de instalaciones y optimización de ROI para tu operación."
+        "title": "Control de Calidad",
+        "description": "Producción en lotes pequeños con riguroso control de calidad y pruebas."
       }
     },
     "features": {
       "title": "Por Qué Minar con TheLuxMining",
       "enterprise": {
-        "title": "Equipo de Nivel Empresarial",
-        "description": "Acceso al hardware de minería ASIC más reciente con confiabilidad comprobada y especificaciones líderes en la industria."
+        "title": "Materiales Premium",
+        "description": "Acrílico y componentes de alta calidad para una experiencia minera ideal para escritorio."
       },
       "efficiency": {
-        "title": "Máxima Eficiencia",
-        "description": "Logra la mejor relación potencia-hashrate con nuestras soluciones optimizadas de enfriamiento y sistemas de gestión energética."
+        "title": "Diseño para Escritorio",
+        "description": "Mineros solo compactos y silenciosos que lucen geniales en cualquier escritorio o estante."
       },
       "roi": {
-        "title": "ROI Comprobado",
-        "description": "Historial de ayudar a clientes a lograr operaciones mineras rentables con métricas de rendimiento transparentes."
+        "title": "Calidad en Lotes Pequeños",
+        "description": "Producciones limitadas con meticuloso control de calidad y pruebas."
       },
       "security": {
-        "title": "Operaciones Seguras",
-        "description": "Protocolos de seguridad empresarial para proteger tu inversión y garantizar operaciones mineras continuas y confiables."
+        "title": "Probado y Listo",
+        "description": "Pre-probado antes de enviar con guías de configuración para empezar a minar rápidamente."
       }
     },
     "stats": {
@@ -308,7 +308,7 @@
     "privacy": "Política de Privacidad",
     "terms": "Términos y Condiciones",
     "returns": "Política de Devoluciones",
-    "description": "Tu destino principal para hardware de minería cripto, mineros solo, soluciones de almacenamiento en frío, llaveros Bitcoin y gadgets exclusivos de criptomonedas.",
+    "description": "Mineros solo Bitcoin artesanales de acrílico premium, soluciones de almacenamiento frío y piezas de estilo de vida crypto. Lotes pequeños, gran calidad.",
     "quick_links": "Enlaces Rápidos",
     "products_title": "Productos",
     "contact_info": "Contacto",
@@ -322,8 +322,8 @@
   },
   "products": {
     "hero": {
-      "title": "Hardware de MinerÃ­a Bitcoin",
-      "subtitle": "Equipo de minerÃ­a de criptomonedas premium disponible en diferentes configuraciones y niveles de rendimiento para satisfacer las necesidades de tu operaciÃ³n minera."
+      "title": "Hardware Premium de Minería Solo",
+      "subtitle": "Mineros solo Bitcoin artesanales de acrílico y accesorios crypto para escritorio. Cada pieza construida para rendimiento y estilo."
     },
     "filters": {
       "category": "CategorÃ­a",

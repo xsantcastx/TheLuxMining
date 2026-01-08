@@ -1,6 +1,6 @@
 {
   "page_titles": {
-    "home": "Premium Bitcoin Mining Hardware",
+    "home": "Premium Bitcoin Solo Miners & Crypto Desk Gear",
     "products": "Mining Products",
     "product_details": "Product Details",
     "gallery": "Gallery",
@@ -30,15 +30,15 @@
   },
   "home": {
     "hero": {
-      "title": "Mine Your Future",
-      "subtitle": " Where crypto tech becomes lifestyle.\nExplore mining gear, secure storage, and gadgets that show your passion for the decentralized future. Innovation, security, and design  without limits.",
-      "description": "Join the revolution. Maximize your profits with cutting-edge ASIC miners engineered for peak performance and unmatched efficiency.",
-      "cta_primary": "Explore Miners",
-      "cta_secondary": "Request Quote"
+      "title": "Where Bitcoin Hardware Becomes Desk Art",
+      "subtitle": "Premium solo miners, cold storage, and crypto lifestyle pieces—built to look as good as they run.",
+      "description": "Handmade acrylic builds, cold-storage essentials, and gifts for Bitcoin enthusiasts.",
+      "cta_primary": "Shop Solo Miners",
+      "cta_secondary": "View Gallery"
     },
     "featured": {
-      "title": "Featured Mining Hardware",
-      "subtitle": "Discover our latest Bitcoin mining solutions",
+      "title": "Featured Drops",
+      "subtitle": "Limited builds—when they're gone, they're gone",
       "latest": "Latest Products",
       "flagship": "Flagship Miners",
       "professional": "Professional Series",
@@ -51,19 +51,19 @@
       "view_full": "View Full Gallery â†’"
     },
     "why_choose": {
-      "title": "Why Choose TheLuxMining?",
-      "subtitle": "Your Success Is Our Mission",
+      "title": "Why TheLuxMining?",
+      "subtitle": "Where craft meets crypto",
       "hashrate": {
-        "title": "Peak Hash Rate",
-        "description": "Industry-leading hash rate performance with cutting-edge ASIC technology, maximizing your Bitcoin mining profitability."
+        "title": "Handmade Acrylic Builds",
+        "description": "Premium acrylic craftsmanship with laser-engraved personalization available."
       },
       "efficiency": {
-        "title": "Superior Efficiency",
-        "description": "Optimized power consumption with advanced cooling systems, delivering the best J/TH ratio in the market."
+        "title": "Tested Before Shipping",
+        "description": "Every unit tested and verified to ensure it arrives ready to mine."
       },
       "roi": {
-        "title": "Maximum ROI",
-        "description": "Enterprise-grade reliability and uptime guarantees, ensuring consistent returns on your mining investment."
+        "title": "Beginner-Friendly Setup",
+        "description": "Simple setup guides and friendly support to get you mining quickly."
       }
     },
     "cta": {
@@ -78,41 +78,41 @@
     },
     "services": {
       "title": "Our Services",
-      "subtitle": "Complete Bitcoin Mining Solutions",
+      "subtitle": "Complete Solo Mining Solutions",
       "hardware": {
-        "title": "Premium Hardware",
-        "description": "Top-tier ASIC miners from trusted manufacturers, optimized for maximum hash rate and energy efficiency."
+        "title": "Premium Acrylic Builds",
+        "description": "Handcrafted acrylic solo miners that combine functionality with desk-worthy aesthetics."
       },
       "setup": {
-        "title": "Professional Setup",
-        "description": "Expert installation and configuration services to get your mining operation running at peak performance."
+        "title": "Custom Engraving",
+        "description": "Laser-engraved personalization to make your miner truly unique."
       },
       "support": {
-        "title": "24/7 Support",
-        "description": "Round-the-clock technical assistance to ensure your mining rigs maintain optimal uptime and profitability."
+        "title": "Setup Guides & Support",
+        "description": "Simple setup instructions and friendly support to help you start solo mining."
       },
       "consulting": {
-        "title": "Mining Consultation",
-        "description": "Strategic guidance on hardware selection, facility planning, and ROI optimization for your mining operation."
+        "title": "Quality Control",
+        "description": "Small batch production with rigorous testing to ensure premium quality."
       }
     },
     "features": {
       "title": "Why Mine with TheLuxMining",
       "enterprise": {
-        "title": "Enterprise-Grade Equipment",
-        "description": "Access to the latest ASIC mining hardware with proven reliability and industry-leading specifications."
+        "title": "Premium Materials",
+        "description": "High-quality acrylic and components for a desk-friendly mining experience."
       },
       "efficiency": {
-        "title": "Maximum Efficiency",
-        "description": "Achieve the best power-to-hashrate ratio with our optimized cooling solutions and energy management systems."
+        "title": "Desk-Friendly Design",
+        "description": "Compact, quiet solo miners that look great on any desk or shelf."
       },
       "roi": {
-        "title": "Proven ROI",
-        "description": "Track record of helping clients achieve profitable mining operations with transparent performance metrics."
+        "title": "Small Batch Quality",
+        "description": "Limited production runs with meticulous quality control and testing."
       },
       "security": {
-        "title": "Secure Operations",
-        "description": "Enterprise security protocols to protect your investment and ensure continuous, reliable mining operations."
+        "title": "Tested & Ready",
+        "description": "Pre-tested before shipping with setup guides to get you mining quickly."
       }
     },
     "stats": {
@@ -172,7 +172,7 @@
     "privacy": "Privacy Policy",
     "terms": "Terms and Conditions",
     "returns": "Return Policy",
-    "description": "Your premier destination for crypto mining hardware, solo miners, cold storage solutions, Bitcoin keychains, and exclusive cryptocurrency gadgets.",
+    "description": "Premium handmade acrylic Bitcoin solo miners, cold storage solutions, and crypto lifestyle pieces. Small batches, big quality.",
     "quick_links": "Quick Links",
     "products_title": "Products",
     "contact_info": "Contact",
@@ -186,8 +186,8 @@
   },
   "products": {
     "hero": {
-      "title": "Bitcoin Mining Hardware",
-      "subtitle": "Premium cryptocurrency mining equipment available in different configurations and performance levels to suit your mining operation needs."
+      "title": "Premium Solo Mining Hardware",
+      "subtitle": "Handcrafted acrylic Bitcoin solo miners and crypto desk gear. Each piece built for performance and style."
     },
     "filters": {
       "category": "Category",

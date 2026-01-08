@@ -28,6 +28,9 @@
         <a routerLink="/productos" routerLinkActive="active" class="app-navbar__link">
           {{ 'nav.products' | translate }}
         </a>
+        <a routerLink="/setup-guide" routerLinkActive="active" class="app-navbar__link">
+          Setup Guide
+        </a>
         <a routerLink="/galeria" routerLinkActive="active" class="app-navbar__link">
           {{ 'nav.gallery' | translate }}
         </a>
@@ -167,6 +170,10 @@
 
       <a routerLink="/productos" (click)="closeMobile()" class="mobile-drawer__link">
         {{ 'nav.products' | translate }}
+      </a>
+
+      <a routerLink="/setup-guide" (click)="closeMobile()" class="mobile-drawer__link">
+        Setup Guide
       </a>
 
       <a routerLink="/galeria" (click)="closeMobile()" class="mobile-drawer__link">

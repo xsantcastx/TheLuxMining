@@ -34,6 +34,11 @@ export const routes: Routes = [
     title: 'TheLuxMining | page_titles.contact'
   },
   {
+    path: 'setup-guide',
+    loadComponent: () => import('./pages/setup-guide/setup-guide.page').then(m => m.SetupGuidePage),
+    title: 'TheLuxMining | Setup Guide'
+  },
+  {
     path: 'cart',
     loadComponent: () => import('./pages/cart/cart.page').then(m => m.CartPage),
     title: 'TheLuxMining | page_titles.cart'
@@ -158,6 +163,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/sitemap/sitemap.page').then(m => m.AdminSitemapPage),
     canActivate: [adminGuard],
     title: 'TheLuxMining | Sitemap Generator'
+  },
+  {
+    path: 'admin/setup-guide',
+    loadComponent: () => import('./pages/admin/setup-guide-admin/setup-guide-admin.page').then(m => m.SetupGuideAdminPage),
+    canActivate: [adminGuard],
+    title: 'TheLuxMining | Setup Guide Management'
   },
   {
     path: 'maintenance',

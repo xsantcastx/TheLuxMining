@@ -516,7 +516,21 @@
               <svg class="w-5 h-5 text-bitcoin-orange mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
               </svg>
-              <p class="text-sm text-bitcoin-orange">{{ warningMessage }}</p>
+              <div class="flex-1">
+                <p class="text-sm text-bitcoin-orange font-semibold mb-2">{{ warningMessage }}</p>
+                <p class="text-xs text-bitcoin-gray">iPhone/Mac users: Change camera settings to "Most Compatible" to capture JPG instead of HEIC. Or use <a href="https://heictojpg.com" target="_blank" class="text-bitcoin-orange underline hover:text-bitcoin-gold">heictojpg.com</a> to convert.</p>
+              </div>
+            </div>
+          }
+
+          <!-- Conversion Progress -->
+          @if (isConverting) {
+            <div class="p-4 bg-bitcoin-orange/10 border border-bitcoin-orange/20 rounded-xl flex items-start gap-3">
+              <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-bitcoin-orange mt-0.5 flex-shrink-0"></div>
+              <div class="flex-1">
+                <p class="text-sm text-bitcoin-orange font-semibold">{{ conversionProgress }}</p>
+                <p class="text-xs text-bitcoin-gray mt-1">Converting HEIC files to JPG format... Please wait.</p>
+              </div>
             </div>
           }
 
@@ -568,12 +582,15 @@
               type="file"
               id="imageFile"
               (change)="onCoverSelected($event)"
-              accept="image/*,video/*"
+              accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,video/mp4,video/webm"
               multiple
-              [disabled]="isUploading"
+              [disabled]="isUploading || isConverting"
               class="w-full px-4 py-3 border-2 border-dashed border-bitcoin-orange/30 rounded-xl focus:ring-2 focus:ring-bitcoin-orange focus:border-bitcoin-orange bg-bitcoin-dark/40 text-bitcoin-gray text-base file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-bitcoin-orange/30 file:text-bitcoin-orange hover:file:bg-bitcoin-orange/40 file:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
             <p class="mt-2 text-sm text-bitcoin-gray">
-              Select images or videos for upload. Images: max 10MB. Videos: max 100MB. Supported formats: JPG, PNG, WebP, MP4, WebM.
+              <strong class="text-bitcoin-gold">✨ HEIC files auto-convert to JPG!</strong> Supported: JPG, PNG, WebP, HEIC (max 10MB), MP4/WebM (max 100MB)
+            </p>
+            <p class="mt-1 text-xs text-bitcoin-gray/70">
+              HEIC images will be automatically converted to JPG before upload - no manual conversion needed!
             </p>
           </div>
 

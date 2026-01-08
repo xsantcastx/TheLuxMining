@@ -237,6 +237,14 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Setup Guides - Public read if published, Admin full access
+    match /setupGuides/{guideId} {
+      // Public can read published guides
+      allow read: if resource.data.isPublished == true || isAdmin();
+      // Only admins can create, update, or delete
+      allow create, update, delete: if isAdmin();
+    }
+
     // Deny all other access
     match /{document=**} {
       allow read, write: if false;

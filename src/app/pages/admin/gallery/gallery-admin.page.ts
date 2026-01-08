@@ -4,6 +4,7 @@ import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import heic2any from 'heic2any';
 
 import { AuthService } from '../../../services/auth.service';
 import { MediaService } from '../../../services/media.service';
@@ -76,6 +77,8 @@ export class GalleryAdminComponent extends LoadingComponentBase implements OnIni
     project: ''
   };
   isAddingQuickTags = false;
+  isConverting = false;
+  conversionProgress = '';
 
   selectedFiles: File[] = [];
   private mediaSub: Subscription | null = null;
@@ -656,27 +659,58 @@ export class GalleryAdminComponent extends LoadingComponentBase implements OnIni
     }
 
     const files = Array.from(input.files);
+    this.processFiles(files);
+  }
+
+  private async processFiles(files: File[]): Promise<void> {
     const validFiles: File[] = [];
+    const heicFiles: File[] = [];
+    const rejectedFiles: string[] = [];
     let hasErrors = false;
     
-    // Validate each file
+    // First pass: separate HEIC files from others
     for (const file of files) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        this.errorMessage = `"${file.name}" is not a valid image file`;
-        hasErrors = true;
-        continue;
+      const fileName = file.name.toLowerCase();
+      const isHEIC = fileName.endsWith('.heic') || fileName.endsWith('.heif') || 
+                      file.type === 'image/heic' || file.type === 'image/heif';
+      
+      if (isHEIC) {
+        heicFiles.push(file);
+      } else {
+        // Validate non-HEIC files
+        const validation = this.validateFile(file);
+        if (validation.valid) {
+          validFiles.push(file);
+        } else {
+          rejectedFiles.push(validation.error!);
+          hasErrors = true;
+        }
       }
+    }
 
-      // Validate file size (10MB max)
-      const maxSize = 10 * 1024 * 1024; // 10MB
-      if (file.size > maxSize) {
-        this.errorMessage = `"${file.name}" exceeds 10MB size limit`;
+    // Auto-convert HEIC files
+    if (heicFiles.length > 0) {
+      this.isConverting = true;
+      this.conversionProgress = `Converting ${heicFiles.length} HEIC file(s) to JPG...`;
+      
+      try {
+        const convertedFiles = await this.convertHEICFiles(heicFiles);
+        validFiles.push(...convertedFiles);
+        this.successMessage = `✅ Converted ${convertedFiles.length} HEIC file(s) to JPG`;
+        setTimeout(() => this.successMessage = '', 5000);
+      } catch (error) {
+        console.error('HEIC conversion error:', error);
+        this.errorMessage = `Failed to convert HEIC files. Please convert them manually using an online tool like heictojpg.com`;
         hasErrors = true;
-        continue;
+      } finally {
+        this.isConverting = false;
+        this.conversionProgress = '';
       }
+    }
 
-      validFiles.push(file);
+    // Show error messages for rejected files
+    if (rejectedFiles.length > 0) {
+      this.errorMessage = `${rejectedFiles.length} file(s) rejected:\n${rejectedFiles.join('\n')}`;
     }
 
     if (validFiles.length === 0 && hasErrors) {
@@ -684,17 +718,94 @@ export class GalleryAdminComponent extends LoadingComponentBase implements OnIni
     }
 
     this.selectedFiles = validFiles;
-    this.errorMessage = hasErrors ? this.errorMessage : '';
-    this.warningMessage = '';
+    if (validFiles.length > 0 && rejectedFiles.length === 0 && heicFiles.length === 0) {
+      this.errorMessage = '';
+      this.warningMessage = '';
+    }
 
     // Generate preview URLs for all selected images
     this.revokeAllPreviewUrls();
     this.previewUrls = validFiles.map(file => URL.createObjectURL(file));
 
     if (validFiles.length > 0) {
-      this.successMessage = `${validFiles.length} image(s) selected for upload`;
+      const heicNote = heicFiles.length > 0 ? ` (${heicFiles.length} converted from HEIC)` : '';
+      this.successMessage = `${validFiles.length} file(s) selected for upload${heicNote}`;
       setTimeout(() => this.successMessage = '', 3000);
     }
+  }
+
+  private validateFile(file: File): { valid: boolean; error?: string } {
+    // Validate file type (images and videos)
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    
+    if (!isImage && !isVideo) {
+      return { 
+        valid: false, 
+        error: `"${file.name}" - Invalid file type. Only images and videos are supported.` 
+      };
+    }
+
+    // Validate file size
+    const maxSize = isImage ? 10 * 1024 * 1024 : 100 * 1024 * 1024; // 10MB for images, 100MB for videos
+    if (file.size > maxSize) {
+      const maxSizeMB = isImage ? '10MB' : '100MB';
+      return { 
+        valid: false, 
+        error: `"${file.name}" - Exceeds ${maxSizeMB} size limit.` 
+      };
+    }
+
+    // Validate supported formats
+    const supportedFormats = [
+      'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
+      'video/mp4', 'video/webm', 'video/ogg'
+    ];
+    
+    if (!supportedFormats.includes(file.type)) {
+      return { 
+        valid: false, 
+        error: `"${file.name}" - Unsupported format. Use JPG, PNG, WebP, MP4, or WebM.` 
+      };
+    }
+
+    return { valid: true };
+  }
+
+  private async convertHEICFiles(heicFiles: File[]): Promise<File[]> {
+    const convertedFiles: File[] = [];
+    
+    for (let i = 0; i < heicFiles.length; i++) {
+      const file = heicFiles[i];
+      this.conversionProgress = `Converting ${i + 1}/${heicFiles.length}: ${file.name}`;
+      
+      try {
+        // Convert HEIC to JPG blob
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: 'image/jpeg',
+          quality: 0.9
+        });
+
+        // heic2any can return Blob or Blob[]
+        const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        
+        // Create new File from blob with .jpg extension
+        const newFileName = file.name.replace(/\.heic$/i, '.jpg').replace(/\.heif$/i, '.jpg');
+        const convertedFile = new File([blob], newFileName, { 
+          type: 'image/jpeg',
+          lastModified: file.lastModified 
+        });
+        
+        convertedFiles.push(convertedFile);
+        console.log(`✅ Converted ${file.name} → ${newFileName}`);
+      } catch (error) {
+        console.error(`Failed to convert ${file.name}:`, error);
+        throw error;
+      }
+    }
+    
+    return convertedFiles;
   }
 
   removeImage(index: number): void {
