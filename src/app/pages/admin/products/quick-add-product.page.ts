@@ -16,6 +16,7 @@ import { Product, ProductBenefit } from '../../../models/product';
 import { Category, Model, Tag } from '../../../models/catalog';
 import { BenefitTemplate } from '../../../models/benefit-template';
 import { MediaCreateInput, MEDIA_VALIDATION } from '../../../models/media';
+import heic2any from 'heic2any';
 import { LoadingComponentBase } from '../../../core/classes/loading-component.base';
 
 @Component({
@@ -322,9 +323,23 @@ export class QuickAddProductComponent extends LoadingComponentBase implements On
     this.seoPreviewUrl = `https://theluxmining.com/productos/${slug || 'product-url'}`;
   }
 
-  onCoverImageSelected(event: any) {
-    const file = event.target.files[0];
+  async onCoverImageSelected(event: any) {
+    let file = event.target.files[0];
     if (file) {
+      try {
+        file = await this.convertHeicIfNeeded(file);
+      } catch (error) {
+        console.error('HEIC conversion error:', error);
+        this.errorMessage = 'Failed to convert HEIC image. Please convert to JPG manually.';
+        return;
+      }
+
+      const validation = this.storageService.validateImageFile(file);
+      if (!validation.valid) {
+        this.errorMessage = validation.error || 'Invalid image file';
+        return;
+      }
+
       if (file.size > MEDIA_VALIDATION.MAX_SIZE) {
         this.errorMessage = 'admin.errors.file_too_large';
         return;
@@ -341,24 +356,61 @@ export class QuickAddProductComponent extends LoadingComponentBase implements On
     }
   }
 
-  onGalleryImagesSelected(event: any) {
+  async onGalleryImagesSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
     
     for (const file of files) {
-      if (file.size > MEDIA_VALIDATION.MAX_SIZE) {
+      let processedFile = file;
+      try {
+        processedFile = await this.convertHeicIfNeeded(file);
+      } catch (error) {
+        console.error('HEIC conversion error:', error);
+        this.errorMessage = 'Failed to convert HEIC image. Please convert to JPG manually.';
+        continue;
+      }
+
+      const validation = this.storageService.validateImageFile(processedFile);
+      if (!validation.valid) {
+        this.errorMessage = validation.error || 'Invalid image file';
+        continue;
+      }
+
+      if (processedFile.size > MEDIA_VALIDATION.MAX_SIZE) {
         this.errorMessage = 'admin.errors.file_too_large';
         continue;
       }
 
-      this.galleryFiles.push(file);
+      this.galleryFiles.push(processedFile);
       
       // Create preview
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.galleryPreviews.push(e.target.result);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(processedFile);
     }
+  }
+
+  private async convertHeicIfNeeded(file: File): Promise<File> {
+    const fileName = file.name.toLowerCase();
+    const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif') ||
+      file.type === 'image/heic' || file.type === 'image/heif';
+    if (!isHeic) {
+      return file;
+    }
+
+    const convertedBlob = await heic2any({
+      blob: file,
+      toType: 'image/jpeg',
+      quality: 0.9
+    });
+
+    const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+    const newFileName = file.name.replace(/\.heic$/i, '.jpg').replace(/\.heif$/i, '.jpg');
+    return new File([blob], newFileName, {
+      type: 'image/jpeg',
+      lastModified: file.lastModified
+    });
   }
 
   removeGalleryImage(index: number) {

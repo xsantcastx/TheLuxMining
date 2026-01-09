@@ -582,12 +582,12 @@
               type="file"
               id="imageFile"
               (change)="onCoverSelected($event)"
-              accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,video/mp4,video/webm"
+              accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/x-m4v,video/webm,video/ogg"
               multiple
               [disabled]="isUploading || isConverting"
               class="w-full px-4 py-3 border-2 border-dashed border-bitcoin-orange/30 rounded-xl focus:ring-2 focus:ring-bitcoin-orange focus:border-bitcoin-orange bg-bitcoin-dark/40 text-bitcoin-gray text-base file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-bitcoin-orange/30 file:text-bitcoin-orange hover:file:bg-bitcoin-orange/40 file:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
             <p class="mt-2 text-sm text-bitcoin-gray">
-              <strong class="text-bitcoin-gold">✨ HEIC files auto-convert to JPG!</strong> Supported: JPG, PNG, WebP, HEIC (max 10MB), MP4/WebM (max 100MB)
+              <strong class="text-bitcoin-gold">✨ HEIC files auto-convert to JPG!</strong> Supported: JPG, PNG, WebP, HEIC (max 10MB), MP4/MOV/M4V/WebM (max 200MB)
             </p>
             <p class="mt-1 text-xs text-bitcoin-gray/70">
               HEIC images will be automatically converted to JPG before upload - no manual conversion needed!

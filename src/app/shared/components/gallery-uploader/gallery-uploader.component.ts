@@ -5,6 +5,7 @@ import { MediaService } from '../../../services/media.service';
 import { StorageService } from '../../../services/storage.service';
 import { AuthService } from '../../../services/auth.service';
 import { Media, MediaCreateInput, MEDIA_VALIDATION, MediaTag, PRODUCT_TAGS } from '../../../models/media';
+import heic2any from 'heic2any';
 
 interface GalleryImagePreview {
   file: File;
@@ -102,39 +103,48 @@ export class GalleryUploaderComponent implements OnInit {
     this.errorMessage = '';
 
     for (const file of files) {
+      let processedFile = file;
+      try {
+        processedFile = await this.convertHeicIfNeeded(file);
+      } catch (error) {
+        console.error('HEIC conversion error:', error);
+        this.errorMessage = `Failed to convert HEIC image ${file.name}. Please convert to JPG manually.`;
+        continue;
+      }
+
       // Validate file type
-      const validation = this.storageService.validateImageFile(file);
+      const validation = this.storageService.validateImageFile(processedFile);
       if (!validation.valid) {
         this.errorMessage = validation.error || 'Invalid file';
         continue;
       }
 
       // Validate file size
-      if (file.size > this.maxSize) {
-        this.errorMessage = `File ${file.name} is too large. Max ${this.maxSize / 1024 / 1024}MB`;
+      if (processedFile.size > this.maxSize) {
+        this.errorMessage = `File ${processedFile.name} is too large. Max ${this.maxSize / 1024 / 1024}MB`;
         continue;
       }
 
       // Get dimensions
       let dimensions: { width: number; height: number } | undefined;
       try {
-        dimensions = await this.mediaService.getImageDimensions(file);
+        dimensions = await this.mediaService.getImageDimensions(processedFile);
         
         // Validate dimensions
         if (dimensions.width < this.minWidth || dimensions.height < this.minHeight) {
-          this.errorMessage = `Image ${file.name} is too small: ${dimensions.width}x${dimensions.height}px. Minimum: ${this.minWidth}x${this.minHeight}px`;
+          this.errorMessage = `Image ${processedFile.name} is too small: ${dimensions.width}x${dimensions.height}px. Minimum: ${this.minWidth}x${this.minHeight}px`;
           continue;
         }
       } catch (error) {
         console.error('Error getting dimensions:', error);
-        this.errorMessage = `Failed to load image ${file.name}`;
+        this.errorMessage = `Failed to load image ${processedFile.name}`;
         continue;
       }
 
       // Create preview
       const preview: GalleryImagePreview = {
-        file,
-        preview: URL.createObjectURL(file),
+        file: processedFile,
+        preview: URL.createObjectURL(processedFile),
         dimensions,
         selectedTags: ['detail'], // Default tag
         uploadProgress: 0,
@@ -143,6 +153,28 @@ export class GalleryUploaderComponent implements OnInit {
 
       this.previews.push(preview);
     }
+  }
+
+  private async convertHeicIfNeeded(file: File): Promise<File> {
+    const fileName = file.name.toLowerCase();
+    const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif') ||
+      file.type === 'image/heic' || file.type === 'image/heif';
+    if (!isHeic) {
+      return file;
+    }
+
+    const convertedBlob = await heic2any({
+      blob: file,
+      toType: 'image/jpeg',
+      quality: 0.9
+    });
+
+    const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+    const newFileName = file.name.replace(/\.heic$/i, '.jpg').replace(/\.heif$/i, '.jpg');
+    return new File([blob], newFileName, {
+      type: 'image/jpeg',
+      lastModified: file.lastModified
+    });
   }
 
   removePreview(index: number) {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SetupGuide, SetupGuideStep } from '../../../models/setup-guide';
+import heic2any from 'heic2any';
 import { SetupGuideService } from '../../../services/setup-guide.service';
 import { StorageService } from '../../../services/storage.service';
 import { AuthService } from '../../../services/auth.service';
@@ -237,6 +238,28 @@ export class SetupGuideAdminPage implements OnInit {
     }
   }
 
+  private async convertHeicIfNeeded(file: File): Promise<File> {
+    const fileName = file.name.toLowerCase();
+    const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif') ||
+      file.type === 'image/heic' || file.type === 'image/heif';
+    if (!isHeic) {
+      return file;
+    }
+
+    const convertedBlob = await heic2any({
+      blob: file,
+      toType: 'image/jpeg',
+      quality: 0.9
+    });
+
+    const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+    const newFileName = file.name.replace(/\.heic$/i, '.jpg').replace(/\.heif$/i, '.jpg');
+    return new File([blob], newFileName, {
+      type: 'image/jpeg',
+      lastModified: file.lastModified
+    });
+  }
+
   isVideoUrl(): boolean {
     if (!this.setupGuide?.videoUrl) return false;
     return this.setupGuide.videoUrl.includes('http');
@@ -252,7 +275,7 @@ export class SetupGuideAdminPage implements OnInit {
 
     // Validate video file
     this.videoUploadStatus = 'Validating video...';
-    const validation = await this.storageService.validateVideoFile(file, 50);
+    const validation = await this.storageService.validateVideoFile(file, 200);
     if (!validation.valid) {
       alert(`Video validation failed: ${validation.error}`);
       input.value = ''; // Reset input
@@ -340,7 +363,16 @@ export class SetupGuideAdminPage implements OnInit {
       return;
     }
 
-    const file = input.files[0];
+    let file = input.files[0];
+
+    try {
+      file = await this.convertHeicIfNeeded(file);
+    } catch (error) {
+      console.error('HEIC conversion error:', error);
+      alert('Failed to convert HEIC image. Please convert to JPG manually or use a different image.');
+      input.value = '';
+      return;
+    }
 
     // Validate image file
     this.heroImageUploadStatus = 'Validating image...';
@@ -429,7 +461,16 @@ export class SetupGuideAdminPage implements OnInit {
       return;
     }
 
-    const file = input.files[0];
+    let file = input.files[0];
+
+    try {
+      file = await this.convertHeicIfNeeded(file);
+    } catch (error) {
+      console.error('HEIC conversion error:', error);
+      alert('Failed to convert HEIC image. Please convert to JPG manually or use a different image.');
+      input.value = '';
+      return;
+    }
 
     // Validate image file
     this.stepImageUploadStatus = 'Validating image...';

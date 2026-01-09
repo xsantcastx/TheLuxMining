@@ -140,10 +140,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                       </svg>
                       <span class="font-medium">Upload from Device</span>
-                      <span class="text-xs mt-1">JPG, PNG, WebP (max 5MB)</span>
+                      <span class="text-xs mt-1">JPG, PNG, WebP, HEIC (max 5MB)</span>
                       <input 
                         type="file" 
-                        accept="image/*"
+                        accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
                         (change)="onHeroImageSelected($event)"
                         class="hidden">
                     </label>
@@ -243,10 +243,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                       </svg>
                       <span class="font-medium">Upload Video from Device</span>
-                      <span class="text-xs mt-1">MP4, MOV, WebM (max 200MB, 60s)</span>
+                      <span class="text-xs mt-1">MP4, MOV, M4V, WebM (max 200MB, 60s)</span>
                       <input 
                         type="file" 
-                        accept="video/*"
+                        accept="video/mp4,video/quicktime,video/x-m4v,video/webm,video/ogg"
                         (change)="onVideoSelected($event)"
                         class="hidden">
                     </label>
@@ -454,7 +454,7 @@
                             <span class="text-sm font-medium">Upload</span>
                             <input 
                               type="file" 
-                              accept="image/*"
+                              accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
                               (change)="onStepImageSelected($event, step.id)"
                               class="hidden">
                           </label>

@@ -747,9 +747,9 @@ export class GalleryAdminComponent extends LoadingComponentBase implements OnIni
     }
 
     // Validate file size
-    const maxSize = isImage ? 10 * 1024 * 1024 : 100 * 1024 * 1024; // 10MB for images, 100MB for videos
+    const maxSize = isImage ? 10 * 1024 * 1024 : 200 * 1024 * 1024; // 10MB for images, 200MB for videos
     if (file.size > maxSize) {
-      const maxSizeMB = isImage ? '10MB' : '100MB';
+    const maxSizeMB = isImage ? '10MB' : '200MB';
       return { 
         valid: false, 
         error: `"${file.name}" - Exceeds ${maxSizeMB} size limit.` 
@@ -759,13 +759,19 @@ export class GalleryAdminComponent extends LoadingComponentBase implements OnIni
     // Validate supported formats
     const supportedFormats = [
       'image/jpeg', 'image/jpg', 'image/png', 'image/webp',
-      'video/mp4', 'video/webm', 'video/ogg'
+      'video/mp4', 'video/quicktime', 'video/x-m4v', 'video/webm', 'video/ogg'
     ];
+    const fileName = file.name.toLowerCase();
+    const hasImageExtension = fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') ||
+      fileName.endsWith('.png') || fileName.endsWith('.webp');
+    const hasVideoExtension = fileName.endsWith('.mp4') || fileName.endsWith('.mov') ||
+      fileName.endsWith('.m4v') || fileName.endsWith('.webm') || fileName.endsWith('.ogg');
+    const hasSupportedExtension = hasImageExtension || hasVideoExtension;
     
-    if (!supportedFormats.includes(file.type)) {
+    if (!supportedFormats.includes(file.type) && !hasSupportedExtension) {
       return { 
         valid: false, 
-        error: `"${file.name}" - Unsupported format. Use JPG, PNG, WebP, MP4, or WebM.` 
+        error: `"${file.name}" - Unsupported format. Use JPG, PNG, WebP, MP4, MOV, M4V, WebM, or OGG.` 
       };
     }
 

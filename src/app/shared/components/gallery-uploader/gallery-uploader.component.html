@@ -58,7 +58,7 @@
           id="gallery-upload"
           type="file"
           multiple
-          accept="image/jpeg,image/jpg,image/png,image/webp"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
           (change)="onFileSelected($event)"
           class="sr-only"
         />
@@ -66,7 +66,7 @@
       <p class="text-sm text-bitcoin-gray mt-3">or drag and drop</p>
     </div>
     <p class="text-sm text-bitcoin-gray mt-2">
-      PNG, JPG, WEBP up to 10MB. Minimum {{ minWidth }}x{{ minHeight }}px
+      PNG, JPG, WEBP, HEIC up to 10MB. Minimum {{ minWidth }}x{{ minHeight }}px
     </p>
   </div>
 

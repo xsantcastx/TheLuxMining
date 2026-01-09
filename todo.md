@@ -1,365 +1,142 @@
-chunk-O7R3PUVR.js:15  [2025-10-31T00:28:49.551Z]  @firebase/app-check: AppCheck: 400 error. Attempts allowed again after 00m:01s (appCheck/initial-throttle).
-ts @ chunk-O7R3PUVR.js:15
-warn @ chunk-O7R3PUVR.js:15
-qu @ chunk-VNMX2U7W.js:3
-await in qu
-(anonymous) @ chunk-VNMX2U7W.js:3
-process @ chunk-VNMX2U7W.js:1
-await in process
-start @ chunk-VNMX2U7W.js:1
-Xf @ chunk-VNMX2U7W.js:3
-(anonymous) @ chunk-VNMX2U7W.js:3
-Promise.then
-cm @ chunk-VNMX2U7W.js:3
-dm @ chunk-VNMX2U7W.js:3
-(anonymous) @ chunk-VNMX2U7W.js:1
-(anonymous) @ chunk-VNMX2U7W.js:1
-runOutsideAngular @ chunk-YZBEK7VF.js:4
-Ow @ chunk-VNMX2U7W.js:1
-(anonymous) @ chunk-VNMX2U7W.js:1
-(anonymous) @ main-RZYR33E5.js:1
-(anonymous) @ chunk-VNMX2U7W.js:3
-runOutsideAngular @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-VNMX2U7W.js:3
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-o.factory @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-o.factory @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-o.factory @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-y @ chunk-YZBEK7VF.js:4
-<instance_members_initializer> @ chunk-UNECEZC5.js:1
-m @ chunk-UNECEZC5.js:1
-ɵfac @ chunk-UNECEZC5.js:2
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-ef @ chunk-YZBEK7VF.js:4
-tf @ chunk-YZBEK7VF.js:4
-pr @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-y @ chunk-YZBEK7VF.js:4
-<instance_members_initializer> @ main-RZYR33E5.js:2
-e @ main-RZYR33E5.js:2
-ɵfac @ main-RZYR33E5.js:2
-zn @ chunk-YZBEK7VF.js:4
-oE @ chunk-YZBEK7VF.js:4
-Ti @ chunk-YZBEK7VF.js:4
-create @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-run @ chunk-YZBEK7VF.js:4
-bootstrapImpl @ chunk-YZBEK7VF.js:4
-bootstrap @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-Promise.then
-(anonymous) @ chunk-YZBEK7VF.js:4
-GC @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-run @ chunk-YZBEK7VF.js:4
-$C @ chunk-YZBEK7VF.js:4
-o0 @ chunk-YZBEK7VF.js:4
-Yt @ chunk-NHP4MPMT.js:1
-(anonymous) @ main-RZYR33E5.js:2
-chunk-O7R3PUVR.js:15  [2025-10-31T00:28:49.551Z]  @firebase/app-check: AppCheck: 400 error. Attempts allowed again after 00m:01s (appCheck/initial-throttle).
-ts @ chunk-O7R3PUVR.js:15
-warn @ chunk-O7R3PUVR.js:15
-qu @ chunk-VNMX2U7W.js:3
-await in qu
-getToken @ chunk-VNMX2U7W.js:3
-getToken @ chunk-VNMX2U7W.js:11
-auth @ chunk-VNMX2U7W.js:19
-start @ chunk-VNMX2U7W.js:19
-Fh @ chunk-VNMX2U7W.js:20
-qa @ chunk-VNMX2U7W.js:20
-Iy @ chunk-VNMX2U7W.js:23
-await in Iy
-cI @ chunk-VNMX2U7W.js:23
-Mh @ chunk-VNMX2U7W.js:23
-(anonymous) @ chunk-VNMX2U7W.js:25
-(anonymous) @ chunk-VNMX2U7W.js:25
-await in (anonymous)
-(anonymous) @ chunk-VNMX2U7W.js:25
-(anonymous) @ chunk-VNMX2U7W.js:25
-Promise.then
-uc @ chunk-VNMX2U7W.js:25
-enqueue @ chunk-VNMX2U7W.js:25
-enqueueAndForget @ chunk-VNMX2U7W.js:25
-Dy @ chunk-VNMX2U7W.js:25
-E_ @ chunk-VNMX2U7W.js:26
-(anonymous) @ chunk-VNMX2U7W.js:1
-getAllCategories @ chunk-7D3UKPW3.js:1
-loadCategories @ main-RZYR33E5.js:2
-ngOnInit @ main-RZYR33E5.js:2
-od @ chunk-YZBEK7VF.js:4
-Tv @ chunk-YZBEK7VF.js:4
-zd @ chunk-YZBEK7VF.js:4
-Fo @ chunk-YZBEK7VF.js:4
-DE @ chunk-YZBEK7VF.js:4
-qa @ chunk-YZBEK7VF.js:4
-Tp @ chunk-YZBEK7VF.js:4
-Dp @ chunk-YZBEK7VF.js:4
-DE @ chunk-YZBEK7VF.js:4
-qa @ chunk-YZBEK7VF.js:4
-Tp @ chunk-YZBEK7VF.js:4
-CE @ chunk-YZBEK7VF.js:4
-Cp @ chunk-YZBEK7VF.js:4
-DE @ chunk-YZBEK7VF.js:4
-qa @ chunk-YZBEK7VF.js:4
-IE @ chunk-YZBEK7VF.js:4
-Ip @ chunk-YZBEK7VF.js:4
-synchronizeOnce @ chunk-YZBEK7VF.js:4
-synchronize @ chunk-YZBEK7VF.js:4
-tickImpl @ chunk-YZBEK7VF.js:4
-_tick @ chunk-YZBEK7VF.js:4
-tick @ chunk-YZBEK7VF.js:4
-_loadComponent @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-run @ chunk-YZBEK7VF.js:4
-bootstrapImpl @ chunk-YZBEK7VF.js:4
-bootstrap @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-Promise.then
-(anonymous) @ chunk-YZBEK7VF.js:4
-GC @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-run @ chunk-YZBEK7VF.js:4
-$C @ chunk-YZBEK7VF.js:4
-o0 @ chunk-YZBEK7VF.js:4
-Yt @ chunk-NHP4MPMT.js:1
-(anonymous) @ main-RZYR33E5.js:2
-chunk-O7R3PUVR.js:15  [2025-10-31T00:28:49.552Z]  @firebase/app-check: AppCheck: Requests throttled due to previous 400 error. Attempts allowed again after 00m:01s (appCheck/throttled).
-ts @ chunk-O7R3PUVR.js:15
-warn @ chunk-O7R3PUVR.js:15
-qu @ chunk-VNMX2U7W.js:3
-await in qu
-getToken @ chunk-VNMX2U7W.js:3
-getToken @ chunk-VNMX2U7W.js:11
-auth @ chunk-VNMX2U7W.js:19
-start @ chunk-VNMX2U7W.js:19
-Fh @ chunk-VNMX2U7W.js:20
-(anonymous) @ chunk-VNMX2U7W.js:20
-Vs @ chunk-VNMX2U7W.js:20
-Tp @ chunk-VNMX2U7W.js:20
-await in Tp
-(anonymous) @ chunk-VNMX2U7W.js:25
-(anonymous) @ chunk-VNMX2U7W.js:25
-n @ chunk-VNMX2U7W.js:11
-(anonymous) @ chunk-VNMX2U7W.js:11
-cc @ chunk-VNMX2U7W.js:25
-(anonymous) @ chunk-VNMX2U7W.js:25
-(anonymous) @ chunk-VNMX2U7W.js:25
-(anonymous) @ chunk-VNMX2U7W.js:25
-Promise.then
-uc @ chunk-VNMX2U7W.js:25
-enqueue @ chunk-VNMX2U7W.js:25
-enqueueAndForget @ chunk-VNMX2U7W.js:25
-enqueueRetryable @ chunk-VNMX2U7W.js:25
-o @ chunk-VNMX2U7W.js:11
-hm @ chunk-VNMX2U7W.js:3
-qu @ chunk-VNMX2U7W.js:3
-await in qu
-(anonymous) @ chunk-VNMX2U7W.js:3
-process @ chunk-VNMX2U7W.js:1
-await in process
-start @ chunk-VNMX2U7W.js:1
-Xf @ chunk-VNMX2U7W.js:3
-(anonymous) @ chunk-VNMX2U7W.js:3
-Promise.then
-cm @ chunk-VNMX2U7W.js:3
-dm @ chunk-VNMX2U7W.js:3
-(anonymous) @ chunk-VNMX2U7W.js:1
-(anonymous) @ chunk-VNMX2U7W.js:1
-runOutsideAngular @ chunk-YZBEK7VF.js:4
-Ow @ chunk-VNMX2U7W.js:1
-(anonymous) @ chunk-VNMX2U7W.js:1
-(anonymous) @ main-RZYR33E5.js:1
-(anonymous) @ chunk-VNMX2U7W.js:3
-runOutsideAngular @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-VNMX2U7W.js:3
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-o.factory @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-o.factory @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-o.factory @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-Is @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-retrieve @ chunk-YZBEK7VF.js:4
-$m @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-y @ chunk-YZBEK7VF.js:4
-<instance_members_initializer> @ chunk-UNECEZC5.js:1
-m @ chunk-UNECEZC5.js:1
-ɵfac @ chunk-UNECEZC5.js:2
-hydrate @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-get @ chunk-YZBEK7VF.js:4
-ef @ chunk-YZBEK7VF.js:4
-tf @ chunk-YZBEK7VF.js:4
-pr @ chunk-YZBEK7VF.js:4
-Se @ chunk-YZBEK7VF.js:4
-y @ chunk-YZBEK7VF.js:4
-<instance_members_initializer> @ main-RZYR33E5.js:2
-e @ main-RZYR33E5.js:2
-ɵfac @ main-RZYR33E5.js:2
-zn @ chunk-YZBEK7VF.js:4
-oE @ chunk-YZBEK7VF.js:4
-Ti @ chunk-YZBEK7VF.js:4
-create @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-run @ chunk-YZBEK7VF.js:4
-bootstrapImpl @ chunk-YZBEK7VF.js:4
-bootstrap @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-Promise.then
-(anonymous) @ chunk-YZBEK7VF.js:4
-GC @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-YZBEK7VF.js:4
-run @ chunk-YZBEK7VF.js:4
-$C @ chunk-YZBEK7VF.js:4
-o0 @ chunk-YZBEK7VF.js:4
-Yt @ chunk-NHP4MPMT.js:1
-(anonymous) @ main-RZYR33E5.js:2
-(index):1 [Intervention] Images loaded lazily and replaced with placeholders. Load events are deferred. See https://go.microsoft.com/fwlink/?linkid=2048113
-/client/login:1 [DOM] Input elements should have autocomplete attributes (suggested: "username"): (More info: https://www.chromium.org/developers/design-documents/create-amazing-password-forms) <input type=​"email" id=​"email" formcontrolname=​"email" placeholder=​"ejemplo@empresa.com" class=​"w-full px-4 py-3 bg-bitcoin-dark/​60 border border-bitcoin-gray/​20 text-bitcoin-gray placeholder-bitcoin-gray/​50 rounded-xl focus:​ring-2 focus:​ring-bitcoin-orange focus:​border-bitcoin-orange transition-all ng-untouched ng-pristine ng-invalid">​
-chunk-VCNNTDCS.js:1  [RecaptchaService] Error executing reCAPTCHA: Error: Invalid site key or not loaded in api.js: 6LenxPwrAAAAALzJ56cCqq1EbENfdZuwhNHBwzEW
-    at Array.<anonymous> (recaptcha__en.js:421:275)
-    at recaptcha__en.js:332:207
-    at chunk-VCNNTDCS.js:1:1630
-(anonymous) @ chunk-VCNNTDCS.js:1
-setTimeout
-(anonymous) @ recaptcha__en.js:422
-(anonymous) @ recaptcha__en.js:719
-o @ chunk-VCNNTDCS.js:1
-(anonymous) @ chunk-VCNNTDCS.js:1
-execute @ chunk-VCNNTDCS.js:1
-await in execute
-onSubmit @ chunk-3PQQCPNW.js:1
-(anonymous) @ chunk-3PQQCPNW.js:1
-Dd @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-next @ chunk-YZBEK7VF.js:3
-_next @ chunk-YZBEK7VF.js:3
-next @ chunk-YZBEK7VF.js:3
-(anonymous) @ chunk-YZBEK7VF.js:3
-Ft @ chunk-YZBEK7VF.js:3
-next @ chunk-YZBEK7VF.js:3
-emit @ chunk-YZBEK7VF.js:4
-onSubmit @ chunk-Z5L6XEWK.js:1
-(anonymous) @ chunk-Z5L6XEWK.js:1
-Dd @ chunk-YZBEK7VF.js:4
-r @ chunk-YZBEK7VF.js:4
-(anonymous) @ chunk-NHP4MPMT.js:1
-chunk-3PQQCPNW.js:1  Login error: Error: Invalid site key or not loaded in api.js: 6LenxPwrAAAAALzJ56cCqq1EbENfdZuwhNHBwzEW
-    at Array.<anonymous> (recaptcha__en.js:421:275)
-    at recaptcha__en.js:332:207
-    at chunk-VCNNTDCS.js:1:1630
+2) Remove/replace anything that looks placeholder or “not true”
+
+On the homepage you have “0+ miners deployed”, “0% satisfaction”, “0% uptime”, “0+ years” — that kills trust. 
+TheLuxMining
+
+Also the copy claims “industry-leading ASIC, best J/TH ratio, uptime guarantee” which sounds like you’re selling large-scale industrial miners (Antminer/WhatsMiner), not boutique acrylic solo miners. 
+TheLuxMining
+
+Quick wins
+
+Delete the stat row until you have real numbers.
+
+Replace enterprise claims with your real differentiators:
+
+handmade / premium acrylic
+
+engraving / customization
+
+desk-friendly / conversation piece
+
+small batches / quality control
+
+support + setup guide
+
+3) Homepage structure that fits your actual store (high-converting)
+
+Here’s a front page layout that matches what you sell:
+
+A) Hero (above the fold)
+
+Headline idea:
+“Premium Bitcoin Solo Miners & Crypto Desk Gear.”
+Sub: “Handmade acrylic builds, cold-storage essentials, and gifts for Bitcoin people.”
+
+Buttons:
+
+Primary: Shop Solo Miners
+
+Secondary: Shop Cold Storage / View Gallery
+(Keep “Request Quote” only if you truly do bulk/custom.)
+
+B) Shop by Category (3–4 big tiles)
+
+Solo Miners (Desk Edition)
+
+Cold Storage
+
+Keychains / Gadgets
+
+Accessories / Cables / PSU (if you sell them)
+
+C) Best Sellers (real products)
+
+4–8 product cards:
+
+clear photo
+
+price
+
+“In stock / Ships in X days”
+
+“Customization available”
+
+D) “Why TheLuxMining” (boutique reasons, not ASIC claims)
+
+3–5 bullets like:
+
+Handmade premium acrylic
+
+Laser-engraved personalization
+
+Beginner-friendly setup
+
+Tested before shipping
+
+Fast support
+
+E) Social proof (you already have 1 great review)
+
+Keep it, but also show:
+
+“As seen on” (Etsy/eBay/IG) if applicable
+
+3–6 photo testimonials later
+
+F) Gallery teaser
+
+You already have “View Gallery” — make it a visual strip of 5–8 images.
+
+G) FAQ (reduce support + increase conversion)
+
+“Is this a lottery/solo miner?”
+
+“What do I need to run it?”
+
+“Does it include power supply?”
+
+“Shipping & returns”
+
+“Customization”
+
+4) Trust cleanup (this matters a lot)
+
+Right now your footer/contact details look inconsistent across pages:
+
+Home footer shows diego@theluxvending.com
+ 
+TheLuxMining
+
+Products footer shows contact@theluxmining.com
+ and a placeholder phone 
+TheLuxMining
+
+Contact page shows luxmining1@gmail.com
+ 
+TheLuxMining
+
+✅ Pick one primary support email + real phone (or remove phone) + real business location (or just “USA / EU shipping” if you prefer privacy). Consistency = conversions.
+
+5) Copy that matches your products (ready to paste)
+
+If you want a quick swap that instantly aligns the brand:
+
+Hero headline:
+Where Bitcoin hardware becomes desk art.
+Sub: Premium solo miners, cold storage, and crypto lifestyle pieces—built to look as good as they run.
+
+Section title:
+Featured Drops (Small Batches)
+Sub: Limited builds—when they’re gone, they’re gone.
+
+Why us bullets:
+
+Handmade acrylic builds + premium finish
+
+Custom engraving available
+
+Tested before shipping
+
+Simple setup guides
+
+Friendly support
