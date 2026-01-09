@@ -51,6 +51,13 @@ service firebase.storage {
       allow delete: if isAdmin();
     }
     
+    // Setup guide videos and images - Admin can write, everyone can read
+    match /setup-guide/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidMedia();
+      allow delete: if isAdmin();
+    }
+    
     // Hero images - Admin can write, everyone can read
     match /hero-images/{imageName} {
       allow read: if true;

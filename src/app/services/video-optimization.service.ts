@@ -230,9 +230,18 @@ export class VideoOptimizationService {
    */
   private getVideoFormat(file: File): string {
     if (file.type.includes('mp4')) return 'mp4';
+    if (file.type.includes('quicktime')) return 'mp4'; // iPhone MOV -> MP4
+    if (file.type.includes('m4v')) return 'mp4';       // iPhone M4V -> MP4
     if (file.type.includes('webm')) return 'webm';
     if (file.type.includes('ogg')) return 'ogg';
-    return 'unknown';
+    
+    // Fallback to file extension
+    const fileName = file.name.toLowerCase();
+    if (fileName.endsWith('.mp4') || fileName.endsWith('.mov') || fileName.endsWith('.m4v')) {
+      return 'mp4';
+    }
+    
+    return 'mp4'; // Default to mp4 for better compatibility
   }
 
   /**
@@ -247,10 +256,25 @@ export class VideoOptimizationService {
     maxSizeMB: number = 50,
     maxDuration: number = 60
   ): Promise<{ valid: boolean; error?: string }> {
-    // Check file type
-    const validTypes = ['video/mp4', 'video/webm', 'video/ogg'];
-    if (!validTypes.includes(file.type)) {
-      return { valid: false, error: 'Only MP4, WebM, and OGG videos are allowed' };
+    // Check file type - support various MP4 MIME types including iPhone videos
+    const validTypes = [
+      'video/mp4',
+      'video/quicktime', // iPhone MOV files
+      'video/x-m4v',     // iPhone M4V files
+      'video/webm',
+      'video/ogg'
+    ];
+    
+    // Also check file extension for cases where MIME type is not set correctly
+    const fileName = file.name.toLowerCase();
+    const hasValidExtension = fileName.endsWith('.mp4') || 
+                             fileName.endsWith('.mov') || 
+                             fileName.endsWith('.m4v') ||
+                             fileName.endsWith('.webm') || 
+                             fileName.endsWith('.ogg');
+    
+    if (!validTypes.includes(file.type) && !hasValidExtension) {
+      return { valid: false, error: 'Only MP4, MOV, M4V, WebM, and OGG videos are allowed' };
     }
 
     // Check file size
