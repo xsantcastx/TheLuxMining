@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -15,6 +15,7 @@ import { SetupGuideService } from '../../services/setup-guide.service';
 export class SetupGuidePage implements OnInit {
   private setupGuideService = inject(SetupGuideService);
   private sanitizer = inject(DomSanitizer);
+  private cdr = inject(ChangeDetectorRef);
 
   setupGuide: SetupGuide | null = null;
   isLoading = true;
@@ -27,11 +28,16 @@ export class SetupGuidePage implements OnInit {
   async loadSetupGuide() {
     try {
       this.isLoading = true;
+      this.cdr.detectChanges(); // Force update to show spinner
+      
       this.setupGuide = await this.setupGuideService.getPublishedGuide();
+      
+      this.isLoading = false;
+      this.cdr.detectChanges(); // Force update to show content
     } catch (error) {
       console.error('Error loading setup guide:', error);
-    } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
