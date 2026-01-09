@@ -61,7 +61,7 @@ import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angula
       <input
         #fileInput
         type="file"
-        accept="image/*"
+        accept="image/*,.heic,.heif"
         (change)="onFileSelected($event)"
         class="hidden">
 

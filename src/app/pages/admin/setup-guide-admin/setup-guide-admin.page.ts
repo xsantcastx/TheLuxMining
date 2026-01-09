@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -23,6 +23,7 @@ export class SetupGuideAdminPage implements OnInit {
   private storageService = inject(StorageService);
   private authService = inject(AuthService);
   private mediaService = inject(MediaService);
+  private cdr = inject(ChangeDetectorRef);
 
   setupGuide: SetupGuide | null = null;
   isLoading = true;
@@ -55,6 +56,8 @@ export class SetupGuideAdminPage implements OnInit {
   async loadGuide() {
     try {
       this.isLoading = true;
+      this.cdr.detectChanges(); // Force update to show spinner
+      
       this.setupGuide = await this.setupGuideService.getGuide();
       
       // Initialize arrays if they don't exist or if setupGuide is null
@@ -69,11 +72,14 @@ export class SetupGuideAdminPage implements OnInit {
           this.setupGuide.faqs = [];
         }
       }
+      
+      this.isLoading = false;
+      this.cdr.detectChanges(); // Force update to show content
     } catch (error) {
       console.error('Error loading setup guide:', error);
       alert('Error loading setup guide. Please try again.');
-    } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
