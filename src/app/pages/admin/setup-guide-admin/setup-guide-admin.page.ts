@@ -4,7 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SetupGuide, SetupGuideStep } from '../../../models/setup-guide';
 import { SetupGuideService } from '../../../services/setup-guide.service';
-import { Media } from '../../../models/media';
+import { StorageService } from '../../../services/storage.service';
+import { AuthService } from '../../../services/auth.service';
+import { MediaService } from '../../../services/media.service';
+import { Media, MediaCreateInput } from '../../../models/media';
 import { MediaSelectorModalComponent } from '../../../shared/components/media-selector-modal/media-selector-modal.component';
 
 @Component({
@@ -16,6 +19,9 @@ import { MediaSelectorModalComponent } from '../../../shared/components/media-se
 })
 export class SetupGuideAdminPage implements OnInit {
   private setupGuideService = inject(SetupGuideService);
+  private storageService = inject(StorageService);
+  private authService = inject(AuthService);
+  private mediaService = inject(MediaService);
 
   setupGuide: SetupGuide | null = null;
   isLoading = true;
@@ -25,6 +31,21 @@ export class SetupGuideAdminPage implements OnInit {
   isMediaSelectorOpen = false;
   mediaSelectionTarget: 'video' | 'heroImage' | 'stepImage' = 'video';
   mediaSelectionStepId: string | null = null;
+
+  // Video Upload State
+  isUploadingVideo = false;
+  videoUploadProgress = 0;
+  videoUploadStatus = '';
+
+  // Hero Image Upload State
+  isUploadingHeroImage = false;
+  heroImageUploadProgress = 0;
+  heroImageUploadStatus = '';
+
+  // Step Image Upload State
+  uploadingStepImageId: string | null = null;
+  stepImageUploadProgress = 0;
+  stepImageUploadStatus = '';
 
   ngOnInit() {
     this.loadGuide();
@@ -219,5 +240,278 @@ export class SetupGuideAdminPage implements OnInit {
   isVideoUrl(): boolean {
     if (!this.setupGuide?.videoUrl) return false;
     return this.setupGuide.videoUrl.includes('http');
+  }
+
+  async onVideoSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    // Validate video file
+    this.videoUploadStatus = 'Validating video...';
+    const validation = await this.storageService.validateVideoFile(file, 50);
+    if (!validation.valid) {
+      alert(`Video validation failed: ${validation.error}`);
+      input.value = ''; // Reset input
+      return;
+    }
+
+    try {
+      this.isUploadingVideo = true;
+      this.videoUploadProgress = 0;
+      this.videoUploadStatus = 'Uploading video...';
+
+      // Upload video to storage
+      const timestamp = Date.now();
+      const pathWithoutExt = `setup-guide/video-${timestamp}`;
+      
+      this.storageService.uploadOptimizedVideo(file, pathWithoutExt).subscribe({
+        next: async (progress) => {
+          this.videoUploadProgress = progress.progress || 0;
+          
+          if (progress.optimizing) {
+            this.videoUploadStatus = 'Optimizing video...';
+          } else if (progress.progress && progress.progress < 100) {
+            this.videoUploadStatus = `Uploading: ${progress.progress}%`;
+          }
+
+          if (progress.downloadURL) {
+            this.videoUploadStatus = 'Saving to media library...';
+            
+            // Create media document in Firestore
+            const currentUser = this.authService.getCurrentUser();
+            const mediaInput: MediaCreateInput = {
+              url: progress.downloadURL,
+              thumbnailUrl: progress.thumbnailURL,
+              filename: file.name,
+              storagePath: pathWithoutExt,
+              width: progress.dimensions?.width || 1920,
+              height: progress.dimensions?.height || 1080,
+              size: file.size,
+              mimeType: file.type,
+              mediaType: 'video',
+              uploadedBy: currentUser?.uid || 'system',
+              tags: ['setup-guide', 'video']
+            };
+
+            await this.mediaService.createMedia(mediaInput);
+
+            // Set video URL in setup guide
+            if (this.setupGuide) {
+              this.setupGuide.videoUrl = progress.downloadURL;
+              if (progress.thumbnailURL) {
+                this.setupGuide.videoThumbnailUrl = progress.thumbnailURL;
+              }
+            }
+
+            this.videoUploadStatus = 'Upload complete!';
+            setTimeout(() => {
+              this.isUploadingVideo = false;
+              this.videoUploadProgress = 0;
+              this.videoUploadStatus = '';
+            }, 1500);
+          }
+        },
+        error: (error) => {
+          console.error('Video upload error:', error);
+          alert(`Video upload failed: ${error.message || 'Unknown error'}`);
+          this.isUploadingVideo = false;
+          this.videoUploadProgress = 0;
+          this.videoUploadStatus = '';
+          input.value = ''; // Reset input
+        }
+      });
+    } catch (error) {
+      console.error('Video upload error:', error);
+      alert('Failed to upload video. Please try again.');
+      this.isUploadingVideo = false;
+      this.videoUploadProgress = 0;
+      this.videoUploadStatus = '';
+      input.value = ''; // Reset input
+    }
+  }
+
+  async onHeroImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    // Validate image file
+    this.heroImageUploadStatus = 'Validating image...';
+    const validation = this.storageService.validateImageFile(file, 5);
+    if (!validation.valid) {
+      alert(`Image validation failed: ${validation.error}`);
+      input.value = ''; // Reset input
+      return;
+    }
+
+    try {
+      this.isUploadingHeroImage = true;
+      this.heroImageUploadProgress = 0;
+      this.heroImageUploadStatus = 'Uploading image...';
+
+      // Upload image to storage
+      const timestamp = Date.now();
+      const pathWithoutExt = `setup-guide/hero-${timestamp}`;
+      
+      this.storageService.uploadOptimizedImage(file, pathWithoutExt).subscribe({
+        next: async (progress) => {
+          this.heroImageUploadProgress = progress.progress || 0;
+          
+          if (progress.optimizing) {
+            this.heroImageUploadStatus = 'Optimizing image...';
+          } else if (progress.progress && progress.progress < 100) {
+            this.heroImageUploadStatus = `Uploading: ${progress.progress}%`;
+          }
+
+          if (progress.downloadURL) {
+            this.heroImageUploadStatus = 'Saving to media library...';
+            
+            // Create media document in Firestore
+            const currentUser = this.authService.getCurrentUser();
+            const mediaInput: MediaCreateInput = {
+              url: progress.downloadURL,
+              thumbnailUrl: progress.thumbnailURL,
+              filename: file.name,
+              storagePath: pathWithoutExt,
+              width: progress.dimensions?.width || 1920,
+              height: progress.dimensions?.height || 1080,
+              size: file.size,
+              mimeType: file.type,
+              mediaType: 'image',
+              uploadedBy: currentUser?.uid || 'system',
+              tags: ['setup-guide', 'hero']
+            };
+
+            await this.mediaService.createMedia(mediaInput);
+
+            // Set hero image URL in setup guide
+            if (this.setupGuide) {
+              this.setupGuide.heroImageUrl = progress.downloadURL;
+            }
+
+            this.heroImageUploadStatus = 'Upload complete!';
+            setTimeout(() => {
+              this.isUploadingHeroImage = false;
+              this.heroImageUploadProgress = 0;
+              this.heroImageUploadStatus = '';
+            }, 1500);
+          }
+        },
+        error: (error) => {
+          console.error('Hero image upload error:', error);
+          alert(`Image upload failed: ${error.message || 'Unknown error'}`);
+          this.isUploadingHeroImage = false;
+          this.heroImageUploadProgress = 0;
+          this.heroImageUploadStatus = '';
+          input.value = ''; // Reset input
+        }
+      });
+    } catch (error) {
+      console.error('Hero image upload error:', error);
+      alert('Failed to upload image. Please try again.');
+      this.isUploadingHeroImage = false;
+      this.heroImageUploadProgress = 0;
+      this.heroImageUploadStatus = '';
+      input.value = ''; // Reset input
+    }
+  }
+
+  async onStepImageSelected(event: Event, stepId: string): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    // Validate image file
+    this.stepImageUploadStatus = 'Validating image...';
+    const validation = this.storageService.validateImageFile(file, 5);
+    if (!validation.valid) {
+      alert(`Image validation failed: ${validation.error}`);
+      input.value = ''; // Reset input
+      return;
+    }
+
+    try {
+      this.uploadingStepImageId = stepId;
+      this.stepImageUploadProgress = 0;
+      this.stepImageUploadStatus = 'Uploading image...';
+
+      // Upload image to storage
+      const timestamp = Date.now();
+      const pathWithoutExt = `setup-guide/step-${stepId}-${timestamp}`;
+      
+      this.storageService.uploadOptimizedImage(file, pathWithoutExt).subscribe({
+        next: async (progress) => {
+          this.stepImageUploadProgress = progress.progress || 0;
+          
+          if (progress.optimizing) {
+            this.stepImageUploadStatus = 'Optimizing image...';
+          } else if (progress.progress && progress.progress < 100) {
+            this.stepImageUploadStatus = `Uploading: ${progress.progress}%`;
+          }
+
+          if (progress.downloadURL) {
+            this.stepImageUploadStatus = 'Saving to media library...';
+            
+            // Create media document in Firestore
+            const currentUser = this.authService.getCurrentUser();
+            const mediaInput: MediaCreateInput = {
+              url: progress.downloadURL,
+              thumbnailUrl: progress.thumbnailURL,
+              filename: file.name,
+              storagePath: pathWithoutExt,
+              width: progress.dimensions?.width || 1920,
+              height: progress.dimensions?.height || 1080,
+              size: file.size,
+              mimeType: file.type,
+              mediaType: 'image',
+              uploadedBy: currentUser?.uid || 'system',
+              tags: ['setup-guide', 'step']
+            };
+
+            await this.mediaService.createMedia(mediaInput);
+
+            // Set step image URL in setup guide
+            if (this.setupGuide) {
+              const step = this.setupGuide.steps.find(s => s.id === stepId);
+              if (step) {
+                step.imageUrl = progress.downloadURL;
+              }
+            }
+
+            this.stepImageUploadStatus = 'Upload complete!';
+            setTimeout(() => {
+              this.uploadingStepImageId = null;
+              this.stepImageUploadProgress = 0;
+              this.stepImageUploadStatus = '';
+            }, 1500);
+          }
+        },
+        error: (error) => {
+          console.error('Step image upload error:', error);
+          alert(`Image upload failed: ${error.message || 'Unknown error'}`);
+          this.uploadingStepImageId = null;
+          this.stepImageUploadProgress = 0;
+          this.stepImageUploadStatus = '';
+          input.value = ''; // Reset input
+        }
+      });
+    } catch (error) {
+      console.error('Step image upload error:', error);
+      alert('Failed to upload image. Please try again.');
+      this.uploadingStepImageId = null;
+      this.stepImageUploadProgress = 0;
+      this.stepImageUploadStatus = '';
+      input.value = ''; // Reset input
+    }
   }
 }
