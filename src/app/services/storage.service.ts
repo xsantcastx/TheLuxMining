@@ -220,7 +220,7 @@ export class StorageService {
           const optimized = await this.videoOptimizer.optimizeVideo(file, {
             maxWidth: 1920,
             maxHeight: 1080,
-            maxDuration: 60,
+            maxDuration: 600, // 10 minutes
             thumbnailTime: 1
           });
 
