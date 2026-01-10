@@ -34,7 +34,7 @@ This document describes the media upload and optimization system for TheLuxMinin
 
 #### Video Optimization Features
 - **Automatic thumbnail generation** at 1 second mark
-- **Duration validation** (max 60 seconds by default)
+- **Duration validation** (max 300 seconds / 5 minutes by default)
 - **Size validation** (max 50MB by default)
 - **Metadata extraction** (dimensions, duration)
 - **WebP thumbnails** for video previews
@@ -293,7 +293,7 @@ async onMediaSelect(event: Event) {
 
 ### Videos
 - **Maximum:** 50MB
-- **Maximum duration:** 60 seconds
+- **Maximum duration:** 300 seconds (5 minutes)
 - **Recommended format:** MP4 (H.264)
 - **Recommended resolution:** 1080p or lower
 - **Recommended bitrate:** 2-5 Mbps

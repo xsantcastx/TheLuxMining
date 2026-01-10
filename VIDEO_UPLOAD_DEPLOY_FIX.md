@@ -78,7 +78,7 @@ Run this command to verify your setup:
 ## Video Upload Specs
 
 - **Max file size**: 200MB
-- **Max duration**: 60 seconds
+- **Max duration**: 300 seconds (5 minutes)
 - **Supported formats**: MP4, WebM, OGG
 - **Max dimensions**: 1920x1080
 - **Thumbnail**: Auto-generated (JPEG + WebP)
@@ -124,7 +124,7 @@ If you still encounter errors:
 → Video exceeds 200MB limit.
 
 ### "Video duration exceeds limit"
-→ Video longer than 60 seconds.
+→ Video longer than 300 seconds (5 minutes).
 
 ## Next Steps
 

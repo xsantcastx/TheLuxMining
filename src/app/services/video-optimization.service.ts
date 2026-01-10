@@ -37,7 +37,7 @@ export class VideoOptimizationService {
     const {
       maxWidth = 1920,
       maxHeight = 1080,
-      maxDuration = 60, // Max 60 seconds by default
+      maxDuration = 300, // Max 300 seconds (5 minutes) by default
       thumbnailTime = 1 // Capture thumbnail at 1 second
     } = options;
 

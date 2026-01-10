@@ -67,7 +67,7 @@ Expected output:
 1. Run your app: `npm start`
 2. Login as admin
 3. Navigate to: **Admin Panel → Setup Guide** or **Media Gallery**
-4. Upload a test video (MP4, < 200MB, < 60s)
+4. Upload a test video (MP4, < 200MB, < 5 minutes)
 
 ## 🐛 Common Errors & Solutions
 
@@ -128,11 +128,11 @@ firebase deploy --only storage
 
 ### Error 4: "Video duration exceeds limit"
 
-**Symptom**: Upload fails with "Video duration exceeds 60 seconds"
+**Symptom**: Upload fails with "Video duration exceeds 300 seconds"
 
 **Solution**: Update in `src/app/services/video-optimization.service.ts`:
 ```typescript
-maxDuration?: number = 120; // Change to 120 seconds
+maxDuration?: number = 600; // Change to 600 seconds (10 minutes) if needed
 ```
 
 Or when calling the upload:
@@ -140,7 +140,7 @@ Or when calling the upload:
 this.videoOptimizer.optimizeVideo(file, {
   maxWidth: 1920,
   maxHeight: 1080,
-  maxDuration: 120, // Custom duration
+  maxDuration: 600, // Custom duration (10 minutes)
   thumbnailTime: 1
 });
 ```
@@ -172,7 +172,7 @@ this.videoOptimizer.optimizeVideo(file, {
 2. Frontend validates:
    - File type (MP4/WebM/OGG)
    - File size (< 200MB)
-   - Video duration (< 60s)
+   - Video duration (< 300s / 5 minutes)
    ↓
 3. Video Optimization Service:
    - Loads video metadata
@@ -232,7 +232,7 @@ Auth: { uid: "your-admin-uid", token: { role: "admin" } }
 - ✅ Public read access
 
 ### Video Limits (Code)
-- Max duration: 60 seconds
+- Max duration: 300 seconds (5 minutes)
 - Max dimensions: 1920x1080
 - Formats: MP4, WebM, OGG
 - Thumbnail: Auto-generated at 1 second

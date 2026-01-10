@@ -139,7 +139,7 @@ Your storage rules already support video uploads with the following configuratio
 1. **File size too large**: Max 200MB (configured in storage.rules)
 2. **Not authenticated as admin**: Check user authentication
 3. **Invalid video format**: Only MP4, WebM, OGG supported
-4. **Duration too long**: Max 60 seconds (configurable)
+4. **Duration too long**: Max 300 seconds / 5 minutes (configurable)
 
 ### Error: "Permission denied"
 
@@ -151,7 +151,7 @@ Your storage rules already support video uploads with the following configuratio
 
 Current limits (configurable in code):
 - **Max file size**: 200MB (storage.rules)
-- **Max duration**: 60 seconds (video-optimization.service.ts)
+- **Max duration**: 300 seconds / 5 minutes (video-optimization.service.ts)
 - **Supported formats**: MP4, WebM, OGG
 - **Max dimensions**: 1920x1080 (resized if larger)
 
