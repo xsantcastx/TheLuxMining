@@ -360,7 +360,8 @@ export class StorageService {
    * @returns Promise with validation result
    */
   async validateVideoFile(file: File, maxSizeMB: number = 200): Promise<{ valid: boolean; error?: string }> {
-    return this.videoOptimizer.validateVideoFile(file, maxSizeMB, 60);
+    // Allow uploads up to 10 minutes to match optimization settings
+    return this.videoOptimizer.validateVideoFile(file, maxSizeMB, 600);
   }
 
   /**
